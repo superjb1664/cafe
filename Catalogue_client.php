@@ -18,6 +18,10 @@
             $produits_recherche = Rechercher_Produit($connexion, $_REQUEST["recherche"], "client");
             Vue_Affiche_Produits_Clients($produits_recherche);
         }
+        elseif(isset($_REQUEST["AjoutPanierClient"]))
+        {
+            $_SESSION["idEntreprise"]
+        }
         else {
             $listeProduit = Produits_Select_Libelle_Categ($connexion, "client");
             Vue_Affiche_Produits_Clients($listeProduit);

@@ -1,0 +1,1 @@
+INSERT INTO cafe.commande (id, dateCreation, idEntreprise, etat) VALUES (1, '2021-09-21 15:25:53', 1, 1);

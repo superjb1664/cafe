@@ -7,6 +7,7 @@ function Vue_Entreprise_Client_Menu( )
   <ul id='menu-closed'>  
     <li><a href='Catalogue_client.php'>Catalogue</a></li> 
     <li><a href='Gerer_compteClient.php'>Mon compte</a></li> 
+    <li><a href='Gerer_Panier.php'>Panier</a></li>
   </ul>
 </nav> ";
 }

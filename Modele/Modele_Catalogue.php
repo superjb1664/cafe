@@ -247,6 +247,7 @@ function Categorie_Creer($connexionPDO, $libelle, $description, $desactiver)
     $idCategorie = $connexionPDO->lastInsertId();
     return $idCategorie;
 }
+
 function Rechercher_Produit($connexionPDO, $recherche, $type = ""){
     $requetePreparee = $connexionPDO->prepare('
     select produit.*, libelle
@@ -259,4 +260,45 @@ function Rechercher_Produit($connexionPDO, $recherche, $type = ""){
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
     return $tableauReponse;
+}
+
+function Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise)
+{
+    $requetePreparee = $connexionPDO->prepare('
+    select caddie.*
+    from caddie
+    where idEntreprise = :idEntreprise
+    and etat= 1');
+    $requetePreparee->bindValue('idEntreprise', $idEntreprise);
+    $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+    $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
+    if(count($tableauReponse) == 1)
+        return $tableauReponse[0];
+    return false;
+}
+
+function Ajouter_Produit_Panier($connexionPDO, $idEntreprise, $idProduit)
+{
+    //On recherche si l'entreprise a un panier existant
+    $panier = Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise);
+
+    if($panier == false) {
+        // On crée le panier
+        $date = date("Y-m-d H:i:s");
+        $requetePreparee = $connexionPDO->prepare(
+            'INSERT INTO cafe.commande (id, dateCreation, idEntreprise, etat) 
+         VALUES (1, :date, :idEntreprise, 1);');
+
+
+        $requetePreparee->bindParam(':date', $date);
+        $requetePreparee->bindParam(':idEntreprise', $idEntreprise);
+
+        $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+        //echo $reponse;
+        $idPanier = $connexionPDO->lastInsertId();
+    }
+    else
+    {
+        $idPanier = $panier["id"];
+    }
 }
