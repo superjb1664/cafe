@@ -6,7 +6,7 @@
  */
 function Creer_Connexion()
 {
-    $instancePdo = new PDO('mysql:host=127.0.0.1;dbname=torrefacteur;charset=UTF8',  "root", "", array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
+    $instancePdo = new PDO('mysql:host=127.0.0.1;dbname=cafe;charset=UTF8',  "root", "", array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION ));
     return $instancePdo;
 }
 
