@@ -10,7 +10,8 @@ if(isset($_SESSION["idEntreprise"])) {
     if(isset($_REQUEST["ChangerMDPEntreprise"]))
     {
         Vue_Structure_Entete();
-        Vue_Entreprise_Client_Menu();
+        $quantiteMenu=Panier_Quantite($connexion,$_SESSION["idEntreprise"]);
+        Vue_Entreprise_Client_Menu($quantiteMenu);
 
 
         if (isset($_REQUEST["submitModifMDP"])){
@@ -50,7 +51,8 @@ if(isset($_SESSION["idEntreprise"])) {
     else {
         //Cas par défaut: affichage du menu des actions.
         Vue_Structure_Entete();
-        Vue_Entreprise_Client_Menu();
+        $quantiteMenu=Panier_Quantite($connexion,$_SESSION["idEntreprise"]);
+        Vue_Entreprise_Client_Menu($quantiteMenu);
         Vue_Entreprise_Gerer_Compte();
     }
 }
