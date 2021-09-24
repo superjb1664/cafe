@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 20 sep. 2021 à 18:23
--- Version du serveur : 10.4.21-MariaDB
--- Version de PHP : 7.4.23
+-- Généré le : jeu. 23 sep. 2021 à 01:47
+-- Version du serveur :  10.4.14-MariaDB
+-- Version de PHP : 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,6 +49,50 @@ INSERT INTO `categorie` (`idCategorie`, `libelle`, `description`, `desactiverCat
 (19, 'Moulu', '', 0),
 (20, 'Rooibos', '', 0),
 (21, 'Accompagnements', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande`
+--
+
+CREATE TABLE `commande` (
+  `id` int(11) NOT NULL,
+  `dateCreation` datetime DEFAULT NULL,
+  `idEntreprise` int(11) NOT NULL,
+  `etat` int(11) DEFAULT NULL COMMENT '1 : Caddie\r\n2 : Commande confirmée, en attente de virement\r\n3 : Commande payée, virement reçu\r\n4 : Commande en préparation\r\n5 : Commande en attente approvisionnement\r\n6 : Commande expédiée\r\n7 : Commande reçue par le client\r\n8 : Commande avec incident livraison\r\n9 : Commande avec réexpédition entraine une autre commande\r\n10 : Commande en attente de retour\r\n11 : Commande retournée reçue, en attente de remboursement\r\n12 : Commande retournée remboursée\r\n13 : Commande remboursée sans retour client'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `commande`
+--
+
+INSERT INTO `commande` (`id`, `dateCreation`, `idEntreprise`, `etat`) VALUES
+(1, '2021-09-22 21:20:18', 20, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande_avoir_article`
+--
+
+CREATE TABLE `commande_avoir_article` (
+  `idCommande` int(11) NOT NULL,
+  `idProduit` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `prixHT` float NOT NULL,
+  `tauxTVA` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `commande_avoir_article`
+--
+
+INSERT INTO `commande_avoir_article` (`idCommande`, `idProduit`, `quantite`, `prixHT`, `tauxTVA`) VALUES
+(1, 151, 17, 7, 0.1),
+(1, 152, 1, 7, 0.1),
+(1, 155, 1, 8, 0.1),
+(1, 197, 4, 25, 0.1);
 
 -- --------------------------------------------------------
 
@@ -269,6 +313,19 @@ ALTER TABLE `categorie`
   ADD PRIMARY KEY (`idCategorie`);
 
 --
+-- Index pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `commande_avoir_article`
+--
+ALTER TABLE `commande_avoir_article`
+  ADD PRIMARY KEY (`idCommande`,`idProduit`),
+  ADD KEY `commande_avoir_article_produit_idProduit_fk` (`idProduit`);
+
+--
 -- Index pour la table `entreprise`
 --
 ALTER TABLE `entreprise`
@@ -304,6 +361,12 @@ ALTER TABLE `categorie`
   MODIFY `idCategorie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT pour la table `commande`
+--
+ALTER TABLE `commande`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT pour la table `entreprise`
 --
 ALTER TABLE `entreprise`
@@ -330,6 +393,19 @@ ALTER TABLE `utilisateur`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD CONSTRAINT `idUtilisateur` FOREIGN KEY (`id`) REFERENCES `entreprise` (`idEntreprise`);
+
+--
+-- Contraintes pour la table `commande_avoir_article`
+--
+ALTER TABLE `commande_avoir_article`
+  ADD CONSTRAINT `commande_avoir_article_commande_id_fk` FOREIGN KEY (`idCommande`) REFERENCES `commande` (`id`),
+  ADD CONSTRAINT `commande_avoir_article_produit_idProduit_fk` FOREIGN KEY (`idProduit`) REFERENCES `produit` (`idProduit`);
 
 --
 -- Contraintes pour la table `produit`

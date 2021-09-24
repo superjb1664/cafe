@@ -1,0 +1,15 @@
+{
+  "name": "vendor_name/cafe",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "JB",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "spipu/html2pdf": "^5.2"
+  }
+}

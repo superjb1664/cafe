@@ -1,6 +1,6 @@
 <?php
 
-function Vue_Affiche_Produits_Clients ($listeProduits){
+function Vue_Affiche_Produits_Clients ($listeProduits, $idCategorie = null, $recherche = null){
     echo "<table style='margin: auto'>
             <h1>Liste des produits</h1>
                 </table>";
@@ -98,6 +98,8 @@ function Vue_Affiche_Produits_Clients ($listeProduits){
                     <td colspan='2'>
                         <form>
                         <input type='hidden' value='$nproduit' name='idProduit'>
+                        <input type='hidden' value='$idCategorie' name='idCategorie'>
+                        <input type='hidden' value='$recherche' name='recherche'>
                         <input class='btnRadius'  type='submit' name='AjoutPanierClient' value='Ajouter au panier'>
                        </form>
                     </td>
