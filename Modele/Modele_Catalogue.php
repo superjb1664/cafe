@@ -263,6 +263,21 @@ function Rechercher_Produit($connexionPDO, $recherche, $type = ""){
     return $tableauReponse;
 }
 
+function Rechercher_Commande_Entreprise($connexionPDO, $idEntreprise)
+{
+    $requetePreparee = $connexionPDO->prepare('
+    select commande.*
+    from commande
+    where idEntreprise = :idEntreprise
+    and etat != 1');
+    $requetePreparee->bindValue('idEntreprise', $idEntreprise);
+    $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+    $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
+    if(count($tableauReponse) == 1)
+        return $tableauReponse[0];
+    return false;
+}
+
 function Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
