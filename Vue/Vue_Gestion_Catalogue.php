@@ -280,7 +280,7 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
             }
             echo "
             </td>
-        </tr>
+        </tr> 
         <tr>
             <td>
                 <label> TVA : </label>

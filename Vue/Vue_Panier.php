@@ -186,16 +186,15 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
         echo " <table style='padding: 20px; margin-bottom: 50px;   display: inline-block;   border: 1px solid #f1f1f1; box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); background: #fff; ' >             
  <thead>
                     <tr>
-                        <th colspan=2>Article</th>
-                        <th>Categorie</th>
-                        <th>Reference</th>
-                        <th>Prix HT</th>
-                        <th colspan='3'>Quantité</th>
+                        <th>Reference Commande</th>
+                        <th>Date commande</th>
+                        
+                        <th >Nb d'articles</th>
                         <th >Total HT</th>
-                        <th >Taux TVA</th>
                         <th >Montant TVA</th>
                         <th >Total TTC</th>
                         
+                        <th>Etat</th>
                     
                     </tr>
                 
@@ -204,79 +203,25 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
  
              ";
 
+        foreach ($listeCommande as $item) {
 
-        $totalHT = 0;
-        $totalTVA = 0;
-        $totalTTC = 0;
-        foreach ($listeProduits as $produit) {
-
-
-            // Si le produit a été activé par l'utilisateur, alors il s'affiche sur le catalogue client
-
-
-            $path = "public/image/" . $produit["fichierImage"];
-
-            echo "
-            
-                <tr>
-                    <td>";
-            if ($pdf == false) echo "<img style='max-width: 50px; max-height: 50px; ' src='$path'>";
-            echo "</td>
-                    <td >$produit[nom]</td>
-                    <td  >$produit[libelleCat]</td>
-                    <td  >$produit[idProduit]</td>
-                    <td  > $produit[prixVenteHT] €  </td>";
-            if ($pdf == false) {
-                echo "<td  >
+            $montantTVA = $item["prixTotalTTC"] -$item["prixTotalHT"] ;
+            echo"
+            <tr>
+                        <td>$item[id]</td>
+                        <td >$item[dateCreation]</td>
+                        
+                        <td >$item[nbProduit]</td>
+                        <td >$item[prixTotalHT]</td>
+                        <td >$montantTVA</td>
+                        <td >$item[prixTotalTTC]</td>
+                        <td >$item[libEtat]</td>
                     
-                        <form style='display: contents'>
-                            <input type='hidden' name='idProduit' value='$produit[idProduit]'/>
-                            <input type='submit' name='diminuerQTT' value ='-' style='width: auto'/>
-                    
-                        </form> 
-                    </td>";
-            }
-            echo "<td style='text-align: center'>
-                     $produit[quantite]   
-                     </td>";
+                    </tr>
+            ";
 
-            if ($pdf == false) {
-                echo "<td>
-                     <form style='display: contents'>
-                        <input type='hidden' name='idProduit' value='$produit[idProduit]'>
-                        <input type='submit' name='augmenterQTT' value ='+'  style='width: auto'>
-                    </form>
-                    </td>";
-            }
-            echo "<td>";
-            $coutLigneHT = $produit["prixVenteHT"] * $produit["quantite"];
-            echo $coutLigneHT;
-            $totalHT += $coutLigneHT;
+        }
 
-            echo " €</td>";
-            echo "<td>";
 
-            echo $produit["pourcentageTVA"];
-            echo " %
-                    </td>
-                    <td>";
-            $coutMontantTVA = $coutLigneHT * $produit["pourcentageTVA"];
-            echo $coutMontantTVA;
-            $totalTVA += $coutMontantTVA;
-
-            echo " €
-                    </td>
-                    <td>";
-            $coutTotalTTC = $coutMontantTVA + $coutLigneHT;
-            echo $coutTotalTTC;
-            $totalTTC += $coutTotalTTC;
-            echo " €
-                    </td>
-                </tr>  
-                
-               
-            
-            
-        ";
         }
 }

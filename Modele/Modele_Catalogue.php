@@ -263,13 +263,21 @@ function Rechercher_Produit($connexionPDO, $recherche, $type = ""){
     return $tableauReponse;
 }
 
-function Rechercher_Commande_Entreprise($connexionPDO, $idEntreprise)
+function Liste_Commande_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.*
+    select commande.*, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
     from commande
-    where idEntreprise = :idEntreprise
-    and etat != 1');
+        inner join commande_avoir_article
+            on commande.id = commande_avoir_article.idCommande
+        inner join produit p 
+            on commande_avoir_article.idProduit = p.idProduit
+        inner join historique_etat_commande hec 
+            on commande.etat = hec.etat and commande_avoir_article.idCommande = commande.id
+        inner join etat_commande
+            on idEtatCommande = commande.etat
+        where idEntreprise = :idEntreprise
+    and commande.etat != 1');
     $requetePreparee->bindValue('idEntreprise', $idEntreprise);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
@@ -483,6 +491,20 @@ function Panier_Quantite($connexionPDO, $idEntreprise)
     }
 }
 
+function HistoriqueEtatCommande_Inserer($connexionPDO, $idCommande, $etat, $infoComplementaire = "")
+{
+    $requetePreparee = $connexionPDO->prepare(
+        'insert into `historique_etat_commande` (idCommande, etat, dateHeure, infoComplementaire)  
+        values (:idCommande, :etat, :dateHeure, :infoComplementaire) ');
+    $requetePreparee->bindParam('idCommande', $idCommande);
+    $date = date("Y-m-d H:i:s");
+    $requetePreparee->bindParam('etat', $etat);
+    $requetePreparee->bindParam('dateHeure', $date);
+    $requetePreparee->bindParam('infoComplementaire', $infoComplementaire);
+
+    $reponse = $requetePreparee->execute();
+}
+
 function Commande_Valider_Caddie($connexionPDO, $idCommande)
 {
     $requetePreparee = $connexionPDO->prepare(
@@ -490,6 +512,7 @@ function Commande_Valider_Caddie($connexionPDO, $idCommande)
          set etat = 2
          where `id` = :idCommande
          ');
+    HistoriqueEtatCommande_Inserer($connexionPDO,$idCommande, 2);
     $requetePreparee->bindParam('idCommande', $idCommande);
 
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
