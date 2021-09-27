@@ -266,7 +266,7 @@ function Rechercher_Produit($connexionPDO, $recherche, $type = ""){
 function Liste_Commande_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.*, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
+    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
     from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
@@ -277,13 +277,14 @@ function Liste_Commande_Entreprise($connexionPDO, $idEntreprise)
         inner join etat_commande
             on idEtatCommande = commande.etat
         where idEntreprise = :idEntreprise
-    and commande.etat != 1');
+    and commande.etat != 1
+    group by commande.id, commande.dateCreation, etat_commande.libelle');
     $requetePreparee->bindValue('idEntreprise', $idEntreprise);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
-    if(count($tableauReponse) == 1)
-        return $tableauReponse[0];
-    return false;
+  //  var_dump($tableauReponse);
+  //  var_dump($idEntreprise);
+    return $tableauReponse;
 }
 
 function Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise)
@@ -301,7 +302,45 @@ function Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise)
     return false;
 }
 
-function Rechercher_Liste_Article_Caddie($connexionPDO, $idCommande)
+function Rechercher_Historique_Commande($connexionPDO, $idCommande)
+{
+    $requetePreparee = $connexionPDO->prepare('
+    select EC.*, HEC.*
+    from historique_etat_commande HEC
+        inner join etat_commande EC on HEC.etat = EC.idEtatCommande 
+    where HEC.idCommande = :idCommande
+order by HEC.dateHeure desc
+    
+    ');
+    $requetePreparee->bindValue('idCommande', $idCommande);
+    $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+    $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
+    /*   var_dump($idProduit, $idCommande);
+       var_dump($tableauReponse);*/
+    if(count($tableauReponse) >= 1)
+        return $tableauReponse;
+    return false;
+}
+
+function Rechercher_Commande($connexionPDO, $idCommande)
+{
+    $requetePreparee = $connexionPDO->prepare('
+    select commande.*
+    from commande
+    where id = :idCommande
+    
+    ');
+    $requetePreparee->bindValue('idCommande', $idCommande);
+    $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+    $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
+    /*   var_dump($idProduit, $idCommande);
+       var_dump($tableauReponse);*/
+    if(count($tableauReponse) >= 1)
+        return $tableauReponse;
+    return false;
+}
+
+function Rechercher_Liste_Article_Commande($connexionPDO, $idCommande)
 {
     $requetePreparee = $connexionPDO->prepare('
     select commande_avoir_article.*, produit.*, categorie.libelle as libelleCat, tva.*
@@ -393,8 +432,8 @@ function Ajouter_Produit_Panier($connexionPDO, $idEntreprise, $idProduit)
         // On crée le panier
         $date = date("Y-m-d H:i:s");
         $requetePreparee = $connexionPDO->prepare(
-            'INSERT INTO cafe.commande (id, dateCreation, idEntreprise, etat) 
-         VALUES (1, :date, :idEntreprise, 1);');
+            'INSERT INTO cafe.commande ( dateCreation, idEntreprise, etat) 
+         VALUES ( :date, :idEntreprise, 1);');
 
 
         $requetePreparee->bindParam(':date', $date);
@@ -465,7 +504,7 @@ function Panier_ListeArticle($connexionPDO, $idEntreprise)
         return [];
     }
     else{
-        $listeProduits = Rechercher_Liste_Article_Caddie($connexionPDO, $panier["id"]);
+        $listeProduits = Rechercher_Liste_Article_Commande($connexionPDO, $panier["id"]);
 
         return $listeProduits;
     }
@@ -480,7 +519,7 @@ function Panier_Quantite($connexionPDO, $idEntreprise)
         return 0;
     }
     else{
-        $listeProduits = Rechercher_Liste_Article_Caddie($connexionPDO, $panier["id"]);
+        $listeProduits = Rechercher_Liste_Article_Commande($connexionPDO, $panier["id"]);
 
         $cnt = 0;
         foreach($listeProduits as $produit)

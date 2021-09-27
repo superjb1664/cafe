@@ -1,11 +1,44 @@
 <?php
 
+function Vue_Afficher_InfoCommande($infoCommande){
+
+}
+function Vue_Afficher_HistoCommande($histoEtatCommande)
+{
+
+    if ($histoEtatCommande != false) {
+        echo " 
+            <h1>Historique de la commande</h1>
+                 ";
+        echo " <table style='padding: 20px; margin-bottom: 50px;   display: inline-block;   border: 1px solid #f1f1f1; box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); background: #fff; ' >             
+                <thead>
+                    <tr>
+                        <th >Date</th>
+                        <th>Libelle</th>
+                        <th>Information</th>
+                    </tr>
+                </thead>          ";
+
+
+        foreach ($histoEtatCommande as $etat) {
+            echo "
+                <tr>
+                        <td>$etat[dateHeure]</td>
+                        <td>$etat[libelle]</td>
+                        <td>$etat[infoComplementaire]</td>
+                    </tr>
+            ";
+
+        }
+        echo "</table>";
+    }
+}
 
 function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
-    echo " 
-            <h1>Panier</h1>
-                 ";
-
+    if($pdf == false)
+        echo "<h1>Panier</h1>";
+    else
+        echo "<h1>Commande</h1>";
         //print_r($listeProduits);
     if(count($listeProduits) >= 1) {
         echo " <table style='padding: 20px; margin-bottom: 50px;   display: inline-block;   border: 1px solid #f1f1f1; box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); background: #fff; ' >             
@@ -114,7 +147,9 @@ function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
                 <td > $totalTVA €</td>
                 <td > $totalTTC €</td>
             
-            </tr>
+            </tr>";
+        if($pdf==false)
+            echo "
             <tr>
                 <td colspan='12' style='text-align: center'>
                     <form style='display: contents'>
@@ -122,8 +157,8 @@ function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
                         <input type='submit' name='validerPanier' value ='VALIDER CETTE COMMANDE'  style='width: auto'>
                     </form>
                 </td>
-            </tr>
-        </table>";
+            </tr>";
+        echo "</table>";
 
     }
     else {
@@ -203,20 +238,27 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
  
              ";
 
+        //var_dump($listeCommande);
         foreach ($listeCommande as $item) {
 
             $montantTVA = $item["prixTotalTTC"] -$item["prixTotalHT"] ;
             echo"
-            <tr>
+            <tr style='text-align: center;font-size: '>
                         <td>$item[id]</td>
                         <td >$item[dateCreation]</td>
                         
                         <td >$item[nbProduit]</td>
-                        <td >$item[prixTotalHT]</td>
-                        <td >$montantTVA</td>
-                        <td >$item[prixTotalTTC]</td>
+                        <td >".number_format($item["prixTotalHT"],2)." €</td>
+                        <td >".number_format($montantTVA,2)." €</td>
+                        <td >".number_format($item["prixTotalTTC"],2)." €</td>
                         <td >$item[libEtat]</td>
-                    
+                        <td >
+                            <form style='display: contents'>
+                                <input type='hidden' name='idCommande' value='$item[id]'/>
+                                <input type='submit' name='VoirDetailCommande' value='Voir'/>
+                            
+                            </form>
+                        </td>
                     </tr>
             ";
 

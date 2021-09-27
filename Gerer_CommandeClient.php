@@ -11,8 +11,20 @@ if(isset($_SESSION["idEntreprise"])){
     Vue_Entreprise_Client_Menu($quantiteMenu);
     //Vue_Entreprise_Client_Menu();
 
-    $listeCommande = Liste_Commande_Entreprise($connexion , $_SESSION["idEntreprise"]);
-    Vue_Afficher_Commande_Entreprise($listeCategorie, false);
+    if(isset($_REQUEST["VoirDetailCommande"]))
+    {
+        $listeArticleCommande = Rechercher_Liste_Article_Commande($connexion, $_REQUEST["idCommande"]);
+        $infoCommande = Rechercher_Commande($connexion, $_REQUEST["idCommande"]);
+        $histoEtatCommande = Rechercher_Historique_Commande($connexion, $_REQUEST["idCommande"]);
+        Vue_Affiche_Panier_Client($listeArticleCommande, true);
+        Vue_Afficher_InfoCommande($infoCommande);
+        Vue_Afficher_HistoCommande($histoEtatCommande);
+    }
+    else
+    {
+        $listeCommande = Liste_Commande_Entreprise($connexion , $_SESSION["idEntreprise"]);
+        Vue_Afficher_Commande_Entreprise($listeCommande, false);
+    }
 }
 else
 {

@@ -48,6 +48,19 @@ if(isset($_SESSION["idEntreprise"])) {
         Vue_Structure_Entete();
         Vue_Connexion_Formulaire_connexion_entreprise();
     }
+    elseif(isset($_REQUEST["infoEntreprise"]))
+    {
+        Vue_Structure_Entete();
+        $quantiteMenu=Panier_Quantite($connexion,$_SESSION["idEntreprise"]);
+        Vue_Entreprise_Client_Menu($quantiteMenu);
+    }
+    elseif(isset($_REQUEST["salariesHabitites"]))
+    {
+        Vue_Structure_Entete();
+        $quantiteMenu=Panier_Quantite($connexion,$_SESSION["idEntreprise"]);
+        Vue_Entreprise_Client_Menu($quantiteMenu);
+    }
+
     else {
         //Cas par défaut: affichage du menu des actions.
         Vue_Structure_Entete();

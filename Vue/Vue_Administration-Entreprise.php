@@ -32,6 +32,14 @@ function Vue_Entreprise_Gerer_Compte(){
         <tr>
             <td>
                 <form style='display: contents'>
+                    <input type='submit' name='salariesHabitites' value='Salariés habilités'>
+                    <!--<button type='submit' name='changerMDP'>Changer mot de passe </button>-->
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form style='display: contents'>
                     <input type='submit' name='ChangerMDPEntreprise' value='Changer mot de passe'>
                     <!--<button type='submit' name='changerMDP'>Changer mot de passe </button>-->
                 </form>
