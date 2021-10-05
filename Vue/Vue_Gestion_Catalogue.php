@@ -341,7 +341,7 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
         echo "
         <table> 
             <h3>Le produit a été supprimé</h3>
-            <a href='Gerer_catalogue.php'>Retourner sur le catalogue</a>
+            <a href='Controleur_Gerer_catalogue.php'>Retourner sur le catalogue</a>
         </table>
         ";
     }
@@ -480,7 +480,7 @@ function Vue_Affiche_Création($reponse, $categorie = true, $produit = true){
         if ($produit){
             echo "Le produit a été créé</h3>";
         }
-         echo "<a href='Gerer_catalogue.php'>Retourner sur le catalogue</a>
+         echo "<a href='Controleur_Gerer_catalogue.php'>Retourner sur le catalogue</a>
         </table>
         ";
     }

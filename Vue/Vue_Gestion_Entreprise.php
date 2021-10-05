@@ -11,7 +11,9 @@ function Vue_Gestion_Entreprise_Liste($listeEntreprise, $niveauAutorisation)
 
     <table style="    display: inline-block;">
          <tr>
-            <td colspan="5" style="text-align: center"><form style=\'display: contents\'>
+            <td colspan="5" style="text-align: center">
+                <form style=\'display: contents\'>
+                    <input type="hidden" name="action" value="Gerer_entreprisesPartenaires">
  
                         <button type=\'submit\' onmouseover=\"this.style.background=\'#FFFF99\';this.style.color=\'#FF0000\';\"
                      onmouseout=\"this.style.background=\'\';this.style.color=\'\';\" name=\'nouveau\'> Nouvelle entreprise ? </button>
@@ -43,6 +45,7 @@ function Vue_Gestion_Entreprise_Liste($listeEntreprise, $niveauAutorisation)
             echo "
                 <td>
                     <form style='display: contents'>
+                        <input type='hidden' name='action' value='Gerer_entreprisesPartenaires'>
                             <input type='hidden' value='$iemeEntreprise[idEntreprise]' name='idEntreprise'>
                             <button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                          onmouseout=\"this.style.background='';this.style.color='';\" name='Modifer'> Modifier </button>
@@ -55,6 +58,7 @@ function Vue_Gestion_Entreprise_Liste($listeEntreprise, $niveauAutorisation)
                     echo "
                 <td>
                     <form style='display: contents'>
+                        <input type='hidden' name='action' value='Gerer_entreprisesPartenaires'>
                             <input type='hidden' value='$iemeEntreprise[idEntreprise]' name='idEntreprise'>
                             <button type='submit' onmouseover=\"this.style.background= '#FFFF99';this.style.color= '#FF0000';\"
                          onmouseout=\"this.style.background = '';this.style.color='';\"name='DesactiverEntreprise'> Désactiver </button>
@@ -68,6 +72,7 @@ function Vue_Gestion_Entreprise_Liste($listeEntreprise, $niveauAutorisation)
                     echo "
                 <td>
                     <form style='display: contents'>
+                            <input type='hidden' name='action' value='Gerer_entreprisesPartenaires'>
                             <input type='hidden' value='$iemeEntreprise[idEntreprise]' name='idEntreprise'>
                             <button type='submit' onmouseover=\"this.style.background ='#FFFF99';this.style.color= '#FF0000';\"
                          onmouseout=\"this.style.background='';this.style.color='';\"name='ActiverEntreprise'> Activer </button>
@@ -113,6 +118,7 @@ function Vue_Gestion_Entreprise_Formulaire($modeCreation = true, $idEntreprise =
     echo "
 <table style='display: inline-block'> 
     <form>
+        <input type='hidden' name='action' value='Gerer_entreprisesPartenaires'>
         <input type='hidden' name='idEntreprise' value='$idEntreprise'>
         <tr>
             <td>

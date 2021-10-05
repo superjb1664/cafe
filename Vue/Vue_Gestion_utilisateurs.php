@@ -3,14 +3,16 @@
 
 
 
-function Vue_Gestion_Utilisateur_Liste($listeUtilisateur)
+function Vue_Gestion_Utilisateur_Liste($listeUtilisateur, $msg = "")
 {
     echo '
 <H1>Liste des utilisateurs</H1>
 
     <table style="    display: inline-block;">
          <tr>
-            <td colspan="6" style="text-align: center"><form style=\'display: contents\'>
+            <td colspan="6" style="text-align: center">
+                <form style=\'display: contents\'>
+                    <input type="hidden" name="action" value="Gerer_utilisateur">
  
                         <button type=\'submit\' onmouseover=\"this.style.background=\'#FFFF99\';this.style.color=\'#FF0000\';\"
                      onmouseout=\"this.style.background=\'\';this.style.color=\'\';\" name=\'nouveau\'> Nouvel utilisateur ? </button>
@@ -42,6 +44,7 @@ function Vue_Gestion_Utilisateur_Liste($listeUtilisateur)
         if ($_SESSION['niveauAutorisation'] == 1) {
             echo "
                 <form style='display: contents'>
+                        <input type='hidden' name='action' value='Gerer_utilisateur'>
                         <input type='hidden' value='$iemeUtilisateur[idUtilisateur]' name='idUtilisateur'>
                         <button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                      onmouseout=\"this.style.background='';this.style.color='';\" name='ModifierUtilisateur'> Modifier </button>
@@ -54,6 +57,7 @@ function Vue_Gestion_Utilisateur_Liste($listeUtilisateur)
                     echo "
             <td>
                 <form style='display: contents'>
+                    <input type='hidden' name='action' value='Gerer_utilisateur'>
                         <input type='hidden' value='$iemeUtilisateur[idUtilisateur]' name='idUtilisateur'>
                         <button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                      onmouseout=\"this.style.background='';this.style.color='';\"name='DesactiverUtilisateur'> Désactiver </button>
@@ -83,6 +87,8 @@ function Vue_Gestion_Utilisateur_Liste($listeUtilisateur)
     echo "
 </table>";
 
+    echo "<br><br>$msg";
+
 }
 
 
@@ -98,6 +104,7 @@ function Vue_Gestion_Utilisateur_Formulaire($modeCreation = true, $idUtilisateur
     echo "
 <table style='display: inline-block'> 
     <form method='get'>
+        <input type='hidden' name='action' value='Gerer_utilisateur'>
         <input type='hidden' name='idUtilisateur' value='$idUtilisateur'>
         <tr>
             <td>
@@ -135,7 +142,7 @@ function Vue_Gestion_Utilisateur_Formulaire($modeCreation = true, $idUtilisateur
         echo " 
                 
             <td colspan='2' style='text-align: center'>
-                <button type='submit' name='buttonCreerUtilisateur'>Créer ce client</button>";
+                <button type='submit' name='buttonCreerUtilisateur'>Créer cet utilisateur</button>";
     } else {
         echo "<td>
                 <button type='submit' name='réinitialiserMDPUtilisateur'>Réinitialiser le mot de passe</button>

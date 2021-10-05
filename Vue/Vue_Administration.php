@@ -8,10 +8,10 @@ function Vue_Administration_Menu( )
 
 <nav id='menu'>
   <ul id='menu-closed'> 
-  <li><a href='Gerer_entreprisesPartenaires.php'>Entreprises partenaires</a></li>
-  <li><a href='Gerer_utilisateur.php'>Utilisateurs</a></li>
-  <li><a href='Gerer_catalogue.php'>Catalogue</a></li>   
-   <li><a href='Gerer_monCompte.php'>Mon compte</a></li> 
+  <li><a href='?action=Gerer_entreprisesPartenaires'>Entreprises partenaires</a></li>
+  <li><a href='?action=Gerer_utilisateur'>Utilisateurs</a></li>
+  <li><a href='?action=Gerer_catalogue'>Catalogue</a></li>   
+   <li><a href='?action=Gerer_monCompte'>Mon compte</a></li> 
    
    </ul>
 </nav> ";

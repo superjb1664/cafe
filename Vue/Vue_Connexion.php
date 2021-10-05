@@ -4,7 +4,7 @@
  */
 function Vue_Connexion_Formulaire_connexion_entreprise($msgErreur = "")
 {
-    echo "  <form action='connexion.php' method='post' style='    width: 50%;    display: block;    margin: auto;'>
+    echo "  <form method='post' style='    width: 50%;    display: block;    margin: auto;'>
                 <h1>Connexion</h1>
                 
                 <label><b>Compte</b></label>
@@ -24,7 +24,7 @@ function Vue_Connexion_Formulaire_connexion_entreprise($msgErreur = "")
 
 function Vue_Connexion_Formulaire_connexion_administration($msgErreur = "")
 {
-    echo "  <form action='connexionAdmin.php' method='post' style='    width: 50%;    display: block;    margin: auto;'>
+    echo "  <form  method='post' style='    width: 50%;    display: block;    margin: auto;'>
                 <h1>Adminsitration : Connexion</h1>
                 
                 <label><b>Identifiant de connexion </b></label>
