@@ -8,9 +8,7 @@ function Liste_Commande_Toute($connexionPDO)
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
         inner join produit p 
-            on commande_avoir_article.idProduit = p.idProduit
-        inner join historique_etat_commande hec 
-            on commande.etat = hec.etat and commande_avoir_article.idCommande = commande.id
+            on commande_avoir_article.idProduit = p.idProduit 
         inner join etat_commande
             on idEtatCommande = commande.etat
        
@@ -25,21 +23,18 @@ function Liste_Commande_Toute($connexionPDO)
 function Liste_Commande_Etat($connexionPDO, $idEtatCommande)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
+    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat, denomination
     from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
         inner join produit p 
-            on commande_avoir_article.idProduit = p.idProduit
-        inner join historique_etat_commande hec 
-            on commande.etat = hec.etat and commande_avoir_article.idCommande = commande.id
+            on commande_avoir_article.idProduit = p.idProduit 
         inner join etat_commande
             on idEtatCommande = commande.etat
         inner join entreprise
-            on entreprise.
+            on entreprise.idEntreprise = commande.idEntreprise
     
-        where id = :idEntreprise
-    and idEtatCommande = :idEtatCommande
+        where  idEtatCommande = :idEtatCommande
     group by commande.id, commande.dateCreation, etat_commande.libelle');
     $requetePreparee->bindValue('idEtatCommande', $idEtatCommande);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
@@ -52,7 +47,7 @@ function Liste_Commande_Etat($connexionPDO, $idEtatCommande)
 function Liste_Commande_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
+    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat, denomination
     from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande

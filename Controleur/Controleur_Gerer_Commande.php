@@ -12,8 +12,13 @@ function Controleur_Gerer_Commande()
     if(isset($_REQUEST["boutonCategorie"]))
     {
         //On a demandé les commandes d'une catégorie
-        $idEtatcommande = $_REQUEST["idEtatcommande"];
+        $idEtatcommande = $_REQUEST["idEtatCommande"];
         $listeCommande = Liste_Commande_Etat($connexion, $idEtatcommande);
-        Vue_Afficher_Commande_Entreprise($listeCommande);
+        Vue_Afficher_ListeDeCommandes($listeCommande);
+    }
+    elseif(isset($_REQUEST["Toute"]))
+    {
+        $listeCommande = Liste_Commande_Toute($connexion);
+        Vue_Afficher_ListeDeCommandes($listeCommande);
     }
 }

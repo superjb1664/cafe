@@ -44,7 +44,7 @@ function Vue_Affiche_Etat_Commande($listeEtatCommande)
             </nav>";
 }
 
-function Vue_Afficher_Commande_Entreprise($listeCommande)
+function Vue_Afficher_ListeDeCommandes($listeCommande)
 {
     echo " 
             <h1>Commandes</h1>
@@ -80,7 +80,7 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
             <tr style='text-align: center;font-size: '>
                         <td>$item[id]</td>
                         <td >$item[dateCreation]</td>
-                        
+                        <td >$item[denomination]</td>
                         <td >$item[nbProduit]</td>
                         <td >".number_format($item["prixTotalHT"],2)." €</td>
                         <td >".number_format($montantTVA,2)." €</td>
