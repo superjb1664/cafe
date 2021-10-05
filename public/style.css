@@ -69,6 +69,7 @@ input[type=submit] {
     border: none;
     cursor: pointer;
     width: 100%;
+    border: 1px solid #53af57;
 }
 input[type=submit]:hover {
     background-color: white;
@@ -102,7 +103,7 @@ nav {
     background-color: rgb(19, 51, 61);
     box-shadow: 0 1px 2px rgba(19, 51, 61, 0.5);
     padding: 0 1em;
-    height: 44px; /* Menu height */
+    /* height: 44px; Menu height */
     overflow: hidden; /* Don't show anything outside the nav */
 }
 
@@ -110,7 +111,7 @@ nav ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    max-height: 88px; /* Menu height x 2 */
+    /* max-height: 88px; Menu height x 2 */
     position: relative; /* Position the menu button relative to this item */
 }
 

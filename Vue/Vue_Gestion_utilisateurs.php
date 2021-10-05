@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 function Vue_Gestion_Utilisateur_Liste($listeUtilisateur, $msg = "")
 {
     echo '
@@ -36,7 +34,7 @@ function Vue_Gestion_Utilisateur_Liste($listeUtilisateur, $msg = "")
         <tr >
             <td>$iemeUtilisateur[idUtilisateur]</td>
             <td>$iemeUtilisateur[login]</td>
-            <td>$iemeUtilisateur[niveauAutorisation]</td> 
+            <td>$iemeUtilisateur[libelle]</td> 
             <!-- Création du bouton Modifier -->
             <td>
             ";
@@ -92,7 +90,7 @@ function Vue_Gestion_Utilisateur_Liste($listeUtilisateur, $msg = "")
 }
 
 
-function Vue_Gestion_Utilisateur_Formulaire($modeCreation = true, $idUtilisateur = "", $login = "", $niveauAutorisation = "")
+function Vue_Gestion_Utilisateur_Formulaire($modeCreation = true, $listeNiveauAutorisation, $idUtilisateur = "", $login = "", $niveauAutorisation = "")
 {
     // vous trouverez des explications sur les paramètres HTML5 des balises INPUT sur ce site :
     // https://darchevillepatrick.info/html/html_form.htm
@@ -130,11 +128,12 @@ function Vue_Gestion_Utilisateur_Formulaire($modeCreation = true, $idUtilisateur
                 <label>Niveau d'autorisation : </label>
             </td>
             <td>
-                <select name='niveauAutorisation'>
-                    <option value='1' ".($niveauAutorisation == 1 ? "selected" : "") .">1</option>
-                    <option value='2' ".($niveauAutorisation == 2 ? "selected" : "") .">2</option>
-                    <option value='3' ".(($niveauAutorisation == 3 OR $niveauAutorisation == "") ? "selected" : "") .">3</option>
-                </select>
+                <select name='niveauAutorisation'>";
+        foreach ($listeNiveauAutorisation as $niveau) {
+            echo "<option value='$niveau[idNiveauAutorisation]' " . ($niveauAutorisation == $niveau["idNiveauAutorisation"] ? "selected" : "") . ">$niveau[libelle]</option>";
+        }
+
+                echo "</select>
             </td>
         </tr>
         ";

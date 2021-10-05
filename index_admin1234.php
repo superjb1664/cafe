@@ -22,6 +22,9 @@ switch($typeConnexion)
             $action = $_REQUEST["action"];
             switch($action)
             {
+                case "Gerer_Commande":
+                    Controleur_Gerer_Commande();
+                    break;
                 case "Gerer_entreprisesPartenaires":
                     Controleur_Gerer_entreprisesPartenaires();
                     break;

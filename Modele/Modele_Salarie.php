@@ -3,7 +3,7 @@ function Salarie_Select_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
         select * 
-        from `salarie`
+        from `salarie` 
         where idEntreprise = :idEntreprise
          order by salarie.nom, salarie.prenom');
     $requetePreparee->bindParam('idEntreprise', $idEntreprise);

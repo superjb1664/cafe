@@ -5,7 +5,12 @@
  */
 function Utilisateur_Select($connexionPDO)
 {
-    $requetePreparee = $connexionPDO->prepare('select * from `utilisateur` order by login');
+    $requetePreparee = $connexionPDO->prepare('
+        select *
+        from `utilisateur` 
+            inner join niveau_autorisation
+                on niveau_autorisation.idNiveauAutorisation = utilisateur.niveauAutorisation
+        order by login');
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
     return $tableauReponse;

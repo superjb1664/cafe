@@ -11,7 +11,9 @@ function Vue_Administration_Menu( )
   <li><a href='?action=Gerer_entreprisesPartenaires'>Entreprises partenaires</a></li>
   <li><a href='?action=Gerer_utilisateur'>Utilisateurs</a></li>
   <li><a href='?action=Gerer_catalogue'>Catalogue</a></li>   
-   <li><a href='?action=Gerer_monCompte'>Mon compte</a></li> 
+  <li><a href='?action=Gerer_Commande'>Commandes</a></li>
+  <li><a href='?action=Gerer_monCompte'>Mon compte</a></li> 
+  
    
    </ul>
 </nav> ";

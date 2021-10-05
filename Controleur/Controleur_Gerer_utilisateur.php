@@ -8,34 +8,38 @@ function Controleur_Gerer_utilisateur()
         Vue_Administration_Menu();
 
         $connexion = Creer_Connexion();
+
         // Niveau d'autorisation 1 : SuperAdmin : peut tout faire.
         // Niveau d'autorisation 2 : Il peut modfier une entreprise et catalogue
         // Niveau d'autorisation 3 : Il peut juste gérer le catalogue
 
         if (isset($_REQUEST["ModifierUtilisateur"])) {
             //Modifier dans le formulaire de mise à jour
+            $listeNiveauAutorisation = Niveau_Autorisation_Select($connexion);
             $Utilisateur = Utilisateur_Select_ParId($connexion, $_REQUEST["idUtilisateur"]);
-            Vue_Gestion_Utilisateur_Formulaire(false, $Utilisateur["idUtilisateur"], $Utilisateur["login"], $Utilisateur["niveauAutorisation"]);
+            Vue_Gestion_Utilisateur_Formulaire(false, $listeNiveauAutorisation, $Utilisateur["idUtilisateur"], $Utilisateur["login"], $Utilisateur["niveauAutorisation"]);
 
         } elseif (isset($_REQUEST["mettreAJourUtilisateur"])) {
+
             //Mettre à jour dans la liste des entreprises
             Utilisateur_Modifier($connexion, $_REQUEST["idUtilisateur"], $_REQUEST["login"], $_REQUEST["niveauAutorisation"]);
             $Utilisateur = Utilisateur_Select_ParId($connexion, $_REQUEST["idUtilisateur"]);
-            Redirect_Self_URL();
-            /*$listeUtilisateur = Utilisateur_Select($connexion);
-            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);*/
+            //Redirect_Self_URL();
+            $listeUtilisateur = Utilisateur_Select($connexion);
+            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);
 
         } elseif (isset($_REQUEST["réinitialiserMDPUtilisateur"])) {
             //Réinitialiser MDP sur la fiche de l'entreprise
             $Utilisateur = Utilisateur_Select_ParId($connexion, $_REQUEST["idUtilisateur"]);
             Utilisateur_Modifier_motDePasse($connexion, $_REQUEST["idUtilisateur"], "secret"); //$Utilisateur["idUtilisateur"]
-            Redirect_Self_URL();
-            /*$listeUtilisateur = Utilisateur_Select($connexion);
-            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);*/
+            //Redirect_Self_URL();
+            $listeUtilisateur = Utilisateur_Select($connexion);
+            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);
 
         } elseif (isset($_REQUEST["nouveau"])) {
             //Nouveau sur la liste des utilisateurs
-            Vue_Gestion_Utilisateur_Formulaire(true);
+            $listeNiveauAutorisation = Niveau_Autorisation_Select($connexion);
+            Vue_Gestion_Utilisateur_Formulaire(true, $listeNiveauAutorisation);
 
         } elseif (isset($_REQUEST["buttonCreerUtilisateur"])) {
             // On regarde si le login est disponible : il ne faut pas que deux personnes aient le même login !
@@ -49,7 +53,8 @@ function Controleur_Gerer_utilisateur()
                 }
             }
             if ($login_deja_attribue == true) {
-                Vue_Gestion_Utilisateur_Formulaire(true);
+                $listeNiveauAutorisation = Niveau_Autorisation_Select($connexion);
+                Vue_Gestion_Utilisateur_Formulaire(true, $listeNiveauAutorisation);
                 echo "<br><label><b>Erreur : Ce login est déjà attribué, veuillez saisir un autre login</b></label>";
             } else {
                 //Créer sur la fiche de création d'une utilisateurs
@@ -70,9 +75,9 @@ function Controleur_Gerer_utilisateur()
                 $Utilisateur["desactiver"] = 0;
                 Utilisateur_Modifier_Desactivation($connexion, $_REQUEST["idUtilisateur"], $Utilisateur["desactiver"]);
             }
-            Redirect_Self_URL();
-            /*$listeUtilisateur = Utilisateur_Select($connexion);
-            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);*/
+          //  Redirect_Self_URL();
+            $listeUtilisateur = Utilisateur_Select($connexion);
+            Vue_Gestion_Utilisateur_Liste($listeUtilisateur);
         } else {
             //situation par défaut :
             $listeUtilisateur = Utilisateur_Select($connexion);

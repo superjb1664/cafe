@@ -1,119 +1,119 @@
 <?php
-    function Vue_Affiche_Categories ($listeCategorie, $utilisateur = true){
-        $i = 0;
-        echo "<nav id='categorie'>
+function Vue_Affiche_Categories($listeCategorie, $utilisateur = true)
+{
+    $i = 0;
+    echo "<nav id='categorie'>
                 <ul id='menu-closed'>
                 ";
-        if ($utilisateur){
-            echo "<form style='display: contents'> 
-                <li><input type='submit' name='AjouterCategorie' value='+'> </li>
+    if ($utilisateur) {
+        echo "<form style='display: contents'> 
+                <li>
+                    <input type='hidden' name='action' value='Gerer_catalogue'>
+                    <input type='submit' name='AjouterCategorie' value='+'> </li>
                 </form>";
-        }
-        /*else {
-            echo "<form style='display: contents'> 
-                <li><input type='submit' name='ToutLeCatalogue' value='Catalogue'> </li>
-                </form>";
-        }*/
+    }
+    /*else {
+        echo "<form style='display: contents'>
+            <li><input type='submit' name='ToutLeCatalogue' value='Catalogue'> </li>
+            </form>";
+    }*/
 
-        while ($i < count($listeCategorie)) {
-            $iemeCategorie = $listeCategorie[$i];
-            if ($iemeCategorie["desactiverCategorie"] == 0) {
-                echo "
+    while ($i < count($listeCategorie)) {
+        $iemeCategorie = $listeCategorie[$i];
+        if ($iemeCategorie["desactiverCategorie"] == 0) {
+            echo "
                    <li>
                         <form style='display: contents'> 
+                            <input type='hidden' name='action' value='Gerer_catalogue'>
                             <input type='hidden' name='idCategorie' value='$iemeCategorie[idCategorie]'>
                             <input type=\"submit\" name='boutonCategorie' value=\"$iemeCategorie[libelle]\">
                         </form>
                    </li> 
                    ";
-            }
-            $i++;
         }
-        echo "
+        $i++;
+    }
+    echo "
                 <form style='display: contents'> 
+                    
                     <li><input type='text' name='recherche' placeholder='Rechercher'> </li>
                     <li><input type='submit' name='okRechercher' value='OK'> </li>
                 </form>";
-        if ($utilisateur == false){
-            echo "<form style='display: contents'> 
+    if ($utilisateur == false) {
+        echo "<form style='display: contents'> 
                 <li><input type='submit' name='PanierClient' value='Panier'> </li>
                 </form>";
-        }
-        echo "
+    }
+    echo "
             </ul>
             </nav>";
-    }
+}
 
-    function Vue_Affiche_Tous_Les_Produit ($listeProduits){
-        echo "<table style='margin: auto'>
+function Vue_Affiche_Tous_Les_Produits($listeProduits, $idCategorie = -1)
+{
+    echo "<table style='margin: auto'>
                 <form style='display: contents; '>
                     <td colspan=\"4\">
+                        <input type='hidden' name='action' value='Gerer_catalogue'>
+                        <input type='hidden' name='idCategorie' value='$idCategorie'>
                         <input class='btnRadius' type='submit' name='nouveauProduit' value='Nouveau produit ?'>
                     </td>
                  </form>   
                 </table>";
-        if (isset($listeProduits) AND is_array($listeProduits) AND (count($listeProduits) > 0)){
-            foreach($listeProduits as $produit){
-                $nArticle = "";
-                $nReference = "";
-                $nCategorie = "";
-                $nPrixHT = "";
-                $nResume = "";
-                $nDescription = "";
-                $nImage = "";
-                $nproduit = "";
-                $desactivation = "";
+    if (isset($listeProduits) and is_array($listeProduits) and (count($listeProduits) > 0)) {
+        foreach ($listeProduits as $produit) {
+            $nArticle = "";
+            $nReference = "";
+            $nCategorie = "";
+            $nPrixHT = "";
+            $nResume = "";
+            $nDescription = "";
+            $nImage = "";
+            $nproduit = "";
+            $desactivation = "";
 
-                foreach ($produit as $champ_produit => $valeur_produit)
-                {
-                    if ($champ_produit == 'idProduit'){
-                        $nproduit = $valeur_produit;
-                    }
-                    if($champ_produit == 'nom')
-                    {
-                        $nArticle = $valeur_produit;
-                    }
-                    if($champ_produit == 'reference')
-                    {
-                        $nReference = $valeur_produit;
-                    }
-                    if($champ_produit == 'libelle')
-                    {
-                        $nCategorie = $valeur_produit;
-                    }
-                    if($champ_produit == 'prixVenteHT')
-                    {
-                        $nPrixHT = $valeur_produit;
-                    }
-                    if($champ_produit == 'resume')
-                    {
-                        $nResume = $valeur_produit;
-                    }
-                    if($champ_produit == 'description')
-                    {
-                        $nDescription = $valeur_produit;
-                    }
-                    if ($champ_produit == 'fichierImage')
-                    {
-                        $nImage = $valeur_produit;
-                        $path = "public/image/".$nImage;
-                    }
-                    if ($champ_produit == 'desactiverProduit'){
-                        if ($valeur_produit == 0){
-                            // le produit est activé
-                            $desactivation = false;
-                        }
-                        else{
-                            // Le produit est désactivée
-                            $desactivation = true;
-                        }
+            foreach ($produit as $champ_produit => $valeur_produit) {
+                if ($champ_produit == 'idProduit') {
+                    $nproduit = $valeur_produit;
+                }
+                if ($champ_produit == 'nom') {
+                    $nArticle = $valeur_produit;
+                }
+                if ($champ_produit == 'reference') {
+                    $nReference = $valeur_produit;
+                }
+                if ($champ_produit == 'libelle') {
+                    $nCategorie = $valeur_produit;
+                }
+                if ($champ_produit == 'prixVenteHT') {
+                    $nPrixHT = $valeur_produit;
+                }
+                if ($champ_produit == 'resume') {
+                    $nResume = $valeur_produit;
+                }
+                if ($champ_produit == 'description') {
+                    $nDescription = $valeur_produit;
+                }
+                if ($champ_produit == 'fichierImage') {
+                    $nImage = $valeur_produit;
+                    $path = "public/image/" . $nImage;
+                }
+                if ($champ_produit == 'desactiverProduit') {
+                    if ($valeur_produit == 0) {
+                        // le produit est activé
+                        $desactivation = false;
+                    } else {
+                        // Le produit est désactivée
+                        $desactivation = true;
                     }
                 }
-                echo "
+            }
+            echo "
             <form id='form-id-$nproduit' class='form_produit'>
             <input type='hidden' value='$nproduit' name='idProduit'>
             <input type='hidden' name='ModifierProduit' value='Modifier'>
-            <button onclick='document.getElementById('form-id-".$nproduit."').submit();'>
+            <input type='hidden' name='action' value='Gerer_catalogue'>
+            <button onclick='document.getElementById('form-id-" . $nproduit . "').submit();'>
                  <table style='padding: 20px;    display: inline-block;     ' >
                     <tr>
                         <td style='vertical-align: top;width : 400px'>
@@ -169,17 +169,16 @@
                     </tr>
 
             ";*/
-                echo "</table>
+            echo "</table>
             </button>
             </form>";
-            }
         }
-        else {
-            echo "<h3>Aucun produit n'est disponible pour le moment</h3>";
-        }
+    } else {
+        echo "<h3>Aucun produit n'est disponible pour le moment</h3>";
     }
+}
 
-function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCreation = true, $modeCategorieProduit = false, $idProduit = "", $nom = "", $description = "", $resume = "", $fichierImage = "", $prixVenteHT = "", $idCategorie = "", $idTVA = "", $desactiver = "")
+function Vue_Gestion_Catalogue_Formulaire($listeCategorie, $listeTVA, $modeCreation = true, $modeCategorieProduit = false, $idProduit = "", $nom = "", $description = "", $resume = "", $fichierImage = "", $prixVenteHT = "", $idCategorie = "", $idTVA = "", $desactiver = "")
 
 {
     if ($modeCreation)
@@ -190,8 +189,9 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
     echo "
 <table style='display: inline-block'> 
     <form method='post' enctype='multipart/form-data'>
-        <input type='hidden' name='idProduit' value='$idProduit'>";
-    if($modeCreation == false){
+        <input type='hidden' name='idProduit' value='$idProduit'>
+        <input type='hidden' name='action' value='Gerer_catalogue'>";
+    if ($modeCreation == false) {
         echo "<tr>
             <td>
                 <label>Id du produit </label>
@@ -201,7 +201,7 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
             </td>
         </tr>";
     }
-     echo "   
+    echo "   
         <tr>
             <td>
                 <label>Nom du produit : </label>
@@ -233,7 +233,7 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
             <!--<input type='text' placeholder='Lien fichier image' maxlength='1000' name='fichierImage' value='$fichierImage'>-->
             <input type='file' name='image_utilisateur' accept='.png, .jpg, .jpeg'></td>
         </tr>";
-    if ($modeCreation == false){
+    if ($modeCreation == false) {
         echo "<tr>
             <td> <label> Ancienne image : </label> </td>
             <td>$fichierImage</td>
@@ -257,28 +257,28 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
                 <label>Catégorie : </label>
             </td>
             <td>";
-    if ($modeCategorieProduit == false){
+    if ($modeCategorieProduit == false) {
         echo "<select name='idCategorie'>";
-        foreach($listeCategorie as $categorie)
-        {
-            if($idCategorie == $categorie[idCategorie])
+        foreach ($listeCategorie as $categorie) {
+            if ($idCategorie == $categorie[idCategorie])
                 echo "<option value='$categorie[idCategorie]' selected>$categorie[libelle]</option>";
             else
                 echo "<option value='$categorie[idCategorie]'>$categorie[libelle]</option>";
         }
         echo "</select>";
-                    //<input type='submit' name='CreationCategorieAvecProduit' value='+'>
+        //<input type='submit' name='CreationCategorieAvecProduit' value='+'>
 
     }
-    if ($modeCreation AND $modeCategorieProduit == false){
+
+    if ($modeCreation and $modeCategorieProduit == false) {
         echo "<button type='submit' name='CreationCategorieAvecProduit'>+</button>";
     }
 
-            if ($modeCategorieProduit == true){
-                echo "<input type='text' name='CategorieAvecProduit' placeholder='Nouvelle Catégorie'>
+    if ($modeCategorieProduit == true) {
+        echo "<input type='text' name='CategorieAvecProduit' placeholder='Nouvelle Catégorie'>
                     <input type='text' name='DescriptionCategorieAvecProduit' placeholder='Description Catégorie'>";
-            }
-            echo "
+    }
+    echo "
             </td>
         </tr> 
         <tr>
@@ -286,13 +286,14 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
                 <label> TVA : </label>
             </td>
             <td> <select name='idTVA'>";
-                foreach ($listeTVA as $tva){
-                    if($idTVA == $tva["idTVA"])
-                        echo "<option value='$tva[idTVA]' selected>$tva[pourcentageTVA] %</option>";
-                    else
-                        echo "<option value='$tva[idTVA]'>$tva[pourcentageTVA] %</option>";
-                }
-                echo "
+
+    foreach ($listeTVA as $tva) {
+        if ($idTVA == $tva["idTVA"])
+            echo "<option value='$tva[idTVA]' selected>$tva[pourcentageTVA] %</option>";
+        else
+            echo "<option value='$tva[idTVA]'>$tva[pourcentageTVA] %</option>";
+    }
+    echo "
                         <input type='hidden' value='$idProduit' name='idProduit'>
             </select>
             </td>
@@ -300,8 +301,8 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
         <tr>
             <td><label>Désactiver : </label></td>
             <td>
-                <input type='radio' name='DesactiverProduit' value='1' ".($desactiver == 1 ? 'checked' : "")."> Oui
-                <input type='radio' name='DesactiverProduit' value='0' ".($desactiver == 0 ? 'checked' : "")."> Non
+                <input type='radio' name='DesactiverProduit' value='1' " . ($desactiver == 1 ? 'checked' : "") . "> Oui
+                <input type='radio' name='DesactiverProduit' value='0' " . ($desactiver == 0 ? 'checked' : "") . "> Non
             </td>
         </tr>
         <tr>";
@@ -324,6 +325,7 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
 
 ";
 }
+
 /*function Vue_Demande_Approbation_Suppression ($idProduit){
 
     echo " <table style='margin: auto'>
@@ -354,13 +356,15 @@ function Vue_Gestion_Catalogue_Formulaire ($listeCategorie, $listeTVA, $modeCrea
     }
 }*/
 
-function Vue_Liste_Categorie ($listeCategorie){
+function Vue_Liste_Categorie($listeCategorie)
+{
     echo "
     <h1>Liste des Catégories de produit</h1> <br>
     <table style=\"    display: inline-block;\">
         <form>
             <td colspan=\"4\">
             <input class='btnRadius'  type='submit' name='nouvelleCategorie' value='Nouvelle Catégorie ?'>
+            <input type='hidden' name='action' value='Gerer_catalogue'>
             </td> 
         </form>
             <tr>
@@ -376,23 +380,27 @@ function Vue_Liste_Categorie ($listeCategorie){
                 <td>$iemeCategorie[idCategorie]</td>
                 <td>$iemeCategorie[libelle]</td>
                 <form style='display: contents'><td>
+                    <input type='hidden' name='action' value='Gerer_catalogue'>
                         <input type='hidden' value='$iemeCategorie[idCategorie]' name='idCategorie'>
                          <!--<button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                      onmouseout=\"this.style.background='';this.style.color='';\" name='ModifierCategorie'> Modifier </button>-->
                      <input class='btnRadius'  type='submit' name='ModifierCategorie' value='Modifier'>
                 </form> 
             ";
-        if ($iemeCategorie["desactiverCategorie"] == 0){
-            echo "<td><form style='display: contents'>
+        if ($iemeCategorie["desactiverCategorie"] == 0) {
+            echo "<td>
+                <form style='display: contents'>
+                    <input type='hidden' name='action' value='Gerer_catalogue'>
                             <input type='hidden' value='$iemeCategorie[idCategorie]' name='idCategorie'>
                              <!--<button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                             onmouseout=\"this.style.background='';this.style.color='';\" name='DesactiverCategorie'> Désactiver </button>-->
                             <input class='btnRadius'  type='submit' name='DesactiverCategorie' value='Désactiver'>
                        </form>
                   </td>";
-        }
-        elseif ($iemeCategorie["desactiverCategorie"] == 1){
-            echo "<td><form style='display: contents'>
+        } elseif ($iemeCategorie["desactiverCategorie"] == 1) {
+            echo "<td>
+                        <form style='display: contents'>
+                            <input type='hidden' name='action' value='Gerer_catalogue'>
                             <input type='hidden' value='$iemeCategorie[idCategorie]' name='idCategorie'>
                             <!--<button type='submit' onmouseover=\"this.style.background='#FFFF99';this.style.color='#FF0000';\"
                             onmouseout=\"this.style.background='';this.style.color='';\" name='ActiverCategorie'> Activer </button>-->
@@ -400,14 +408,16 @@ function Vue_Liste_Categorie ($listeCategorie){
                        </form>
                   </td>";
         }
-            //echo "<input type='submit' name='ActiverCategorie' value='Activer'>";
+        //echo "<input type='submit' name='ActiverCategorie' value='Activer'>";
         echo "</tr>";
         $i++;
     }
     echo "</table>";
 }
+
 //$modeCategorieProduit = false,
-function Vue_Formulaire_Creation_Modification_Categorie ($modeCreation = true,   $idCategorie = "", $libelle = "", $description = ""){
+function Vue_Formulaire_Creation_Modification_Categorie($modeCreation = true, $idCategorie = "", $libelle = "", $description = "")
+{
     if ($modeCreation)
         echo "<H1>Création d'une nouvelle catégorie</H1>";
     else
@@ -417,6 +427,7 @@ function Vue_Formulaire_Creation_Modification_Categorie ($modeCreation = true,  
 <table style='display: inline-block'> 
     <form>
         <input type='hidden' name='idCategorie' value='$idCategorie'>
+        <input type='hidden' name='action' value='Gerer_catalogue'>
         <tr>
             <td>
                 <label>ID Catégorie : </label>
@@ -445,16 +456,16 @@ function Vue_Formulaire_Creation_Modification_Categorie ($modeCreation = true,  
         ";
     if ($modeCreation) {
         //if ($modeCategorieProduit == false) {
-            echo " 
+        echo " 
                     
                 <td colspan='2' style='text-align: center'>
                     <button type='submit' name='CreerCategorie'>Créer cette catégorie</button>";
-       /* }
-        else {
-            echo "
-                <td colspan='2' style='text-align: center'>
-                    <button type='submit' name='CreerCategProduit'>Créer cette catégorie</button>";
-        }*/
+        /* }
+         else {
+             echo "
+                 <td colspan='2' style='text-align: center'>
+                     <button type='submit' name='CreerCategProduit'>Créer cette catégorie</button>";
+         }*/
     } else {
         echo "
             <td>
@@ -469,40 +480,44 @@ function Vue_Formulaire_Creation_Modification_Categorie ($modeCreation = true,  
 
 ";
 }
-function Vue_Affiche_Création($reponse, $categorie = true, $produit = true){
-    if ($reponse){
+
+function Vue_Affiche_Création($reponse, $categorie = true, $produit = true)
+{
+    if ($reponse) {
         echo "
         <table> 
             <h3>";
-        if ($categorie){
+        if ($categorie) {
             echo "La catégorie a été créée </h3>";
         }
-        if ($produit){
+        if ($produit) {
             echo "Le produit a été créé</h3>";
         }
-         echo "<a href='Controleur_Gerer_catalogue.php'>Retourner sur le catalogue</a>
+        echo "<a href='?action=Gerer_catalogue'>Retourner sur le catalogue</a>
         </table>
         ";
-    }
-    else {
+    } else {
         echo "
         <table> ";
-        if ($categorie){
+        if ($categorie) {
             echo "<h3>Nous avons rencontré un problème, la catégorie n'a pas pu être créée</h3>";
         }
-        if ($produit){
+        if ($produit) {
             echo "<h3>Nous avons rencontré un problème, le produit n'a pas pu être créé</h3>";
         }
         echo "</table>";
     }
 }
-function Vue_Demande_Approbation_Desactivation($idCategorie){
+
+function Vue_Demande_Approbation_Desactivation($idCategorie)
+{
 
     echo " <table style='margin: auto'>
             <h3> Etes-vous sûr(e) de vouloir désactiver cette catégorie ?
              <br> Si oui, les produits se trouvant à l'intérieur de celle-ci ne seront plus visibles sur le catalogue client.</h3>
             <form style='display: contents; align-content: center'>
                 <input type='hidden' value='$idCategorie' name='idCategorie'>
+                <input type='hidden' name='action' value='Gerer_catalogue'>
                 <td style=\"width: 100px; height: 100px;\"><input type='submit' name='OuiDesactivation' value='Oui'></td>
                 <td style=\"width: 100px; height: 100px;\"><input type='submit' name='AnnulerDesactivation' value='Annuler'></td>
             </form>

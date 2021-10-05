@@ -12,7 +12,7 @@
             if (isset($_REQUEST["boutonCategorie"])) {
                 $idCategorie = $_REQUEST["idCategorie"];
                 $listeProduit = Select_Produit_ParIdCateg($connexion, $idCategorie);
-                Vue_Affiche_Tous_Les_Produit($listeProduit);
+                Vue_Affiche_Tous_Les_Produits($listeProduit, $idCategorie);
                 //Vue_Affiche_Liste_Produit_UneCategorie($listeProduit);
             } elseif (isset($_REQUEST["nouveauProduit"])) {
                 $listeCategorie = Categorie_Select_Tous($connexion);
@@ -42,7 +42,12 @@
                     // Une fois le produit crée, on lui affiche une page pour savoir si le produit a bien été crée ou non, ainsi qu'un lien pour revenir sur le catalogue
                     Vue_Affiche_Création($idProduit, false, true);
                 } else {
-                    Vue_Gestion_Catalogue_Formulaire($listeCategorie, $listeTVA, true);
+                    if(isset($_REQUEST["idCategorie"]))
+                    {
+                        Vue_Gestion_Catalogue_Formulaire($listeCategorie, $listeTVA, true, false, "","","","","","",$_REQUEST["idCategorie"]);
+                    }
+                    else
+                        Vue_Gestion_Catalogue_Formulaire($listeCategorie, $listeTVA, true,);
                 }
             } elseif (isset($_REQUEST["ModifierProduit"])) {
                 $produit = Produit_Select_ParId($connexion, $_REQUEST["idProduit"]);
@@ -58,7 +63,7 @@
                     Produit_Modifier($connexion, $_REQUEST["idProduit"], $_REQUEST["nom"], $_REQUEST["description"], $_REQUEST["resume"], $fichier_image, $_REQUEST["prixVenteHT"], $_REQUEST["idCategorie"], $_REQUEST["idTVA"], $_REQUEST["DesactiverProduit"]);
                     // Une fois le produit modifié, on réaffiche tout le catalogue
                     $listeProduit = Produit_Select($connexion);
-                    Vue_Affiche_Tous_Les_Produit($listeProduit);
+                    Vue_Affiche_Tous_Les_Produits($listeProduit);
                 } else {
                     Vue_Gestion_Catalogue_Formulaire($listeCategorie, $listeTVA, false, false, $produit["idProduit"], $produit["nom"], $produit["description"],
                         $produit["resume"], $produit["fichierImage"], $produit["prixVenteHT"], $produit["idCategorie"], $produit["idTVA"], $produit["desactiverProduit"]);
@@ -137,10 +142,10 @@
                 }
             } elseif (isset($_REQUEST["okRechercher"])) {
                 $produits_recherche = Rechercher_Produit($connexion, $_REQUEST["recherche"]);
-                Vue_Affiche_Tous_Les_Produit($produits_recherche);
+                Vue_Affiche_Tous_Les_Produits($produits_recherche);
             } else {
                 $listeProduit = Produits_Select_Libelle_Categ($connexion);
-                Vue_Affiche_Tous_Les_Produit($listeProduit);
+                Vue_Affiche_Tous_Les_Produits($listeProduit);
             }
         } else {
             //l'utilisateur n'est pas connecté, il n'aurait jamais du arriver ici !
