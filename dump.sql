@@ -55,7 +55,7 @@ CREATE TABLE `commande` (
   `etat` int(11) DEFAULT NULL COMMENT '1 : Caddie\r\n2 : Commande confirm├®e, en attente de virement\r\n3 : Commande pay├®e, virement re├ºu\r\n4 : Commande en pr├®paration\r\n5 : Commande en attente approvisionnement\r\n6 : Commande exp├®di├®e\r\n7 : Commande re├ºue par le client\r\n8 : Commande avec incident livraison\r\n9 : Commande avec r├®exp├®dition entraine une autre commande\r\n10 : Commande en attente de retour\r\n11 : Commande retourn├®e re├ºue, en attente de remboursement\r\n12 : Commande retourn├®e rembours├®e\r\n13 : Commande rembours├®e sans retour client',
   PRIMARY KEY (`id`),
   CONSTRAINT `idUtilisateur` FOREIGN KEY (`id`) REFERENCES `entreprise` (`idEntreprise`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `commande` (
 
 LOCK TABLES `commande` WRITE;
 /*!40000 ALTER TABLE `commande` DISABLE KEYS */;
-INSERT INTO `commande` VALUES (1,'2021-09-22 21:20:18',20,2);
+INSERT INTO `commande` VALUES (1,'2021-09-22 21:20:18',20,2),(2,'2021-10-07 00:59:58',20,2),(3,'2021-10-07 01:03:28',20,2),(4,'2021-10-07 01:05:53',20,2);
 /*!40000 ALTER TABLE `commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `commande_avoir_article` (
 
 LOCK TABLES `commande_avoir_article` WRITE;
 /*!40000 ALTER TABLE `commande_avoir_article` DISABLE KEYS */;
-INSERT INTO `commande_avoir_article` VALUES (1,151,17,7,0.1),(1,152,1,7,0.1),(1,155,1,8,0.1),(1,197,4,25,0.1);
+INSERT INTO `commande_avoir_article` VALUES (1,151,17,7,0.1),(1,152,1,7,0.1),(1,155,1,8,0.1),(1,197,4,25,0.1),(2,128,3,6,0.1),(2,129,3,6,0.1),(2,131,3,6,0.1),(2,150,3,7,0.1),(2,151,2,7,0.1),(3,229,1,6,0.1),(4,249,2,150,0.2),(4,250,1,123,0.1);
 /*!40000 ALTER TABLE `commande_avoir_article` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +170,7 @@ CREATE TABLE `historique_etat_commande` (
   `dateHeure` datetime NOT NULL,
   `infoComplementaire` text NOT NULL,
   PRIMARY KEY (`idHistorique`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,6 +179,7 @@ CREATE TABLE `historique_etat_commande` (
 
 LOCK TABLES `historique_etat_commande` WRITE;
 /*!40000 ALTER TABLE `historique_etat_commande` DISABLE KEYS */;
+INSERT INTO `historique_etat_commande` VALUES (1,2,2,'2021-10-07 01:02:59',''),(2,3,2,'2021-10-07 01:05:38',''),(3,4,2,'2021-10-07 01:16:28','Commande passée par test2 testaerbv');
 /*!40000 ALTER TABLE `historique_etat_commande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,6 +242,36 @@ INSERT INTO `produit` VALUES (128,'Symphonie ','Raisin de Corynthe, Cynorrhodon,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `salarie`
+--
+
+DROP TABLE IF EXISTS `salarie`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `salarie` (
+  `idSalarie` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` text NOT NULL,
+  `prenom` text NOT NULL,
+  `mail` text NOT NULL,
+  `idEntreprise` int(11) NOT NULL,
+  `roleEntreprise` text NOT NULL,
+  `password` text DEFAULT NULL,
+  `actif` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`idSalarie`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salarie`
+--
+
+LOCK TABLES `salarie` WRITE;
+/*!40000 ALTER TABLE `salarie` DISABLE KEYS */;
+INSERT INTO `salarie` VALUES (10,'test2','testaerbv','contact@lyceep.fr',20,'test','$2y$10$UI.w13KAI/Nidcuj3CSeduyI3hrMYcCljgXAsnc/VLjhcvsfmpM.G','');
+/*!40000 ALTER TABLE `salarie` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tva`
 --
 
@@ -287,7 +318,7 @@ CREATE TABLE `utilisateur` (
 
 LOCK TABLES `utilisateur` WRITE;
 /*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
-INSERT INTO `utilisateur` VALUES (1,'root','$2y$10$FUGeFI8X1v5rI5Keq/vQNO/.Zu3cuXs5CYwhhI70YExR4TW50jgIG',1,0),(4,'Uti1','$2y$10$FfXXyrzWoEHwoMYi3wFDq.rSu7hnjTVhUytiI/KgcwNBZdo2LDYia',2,0),(5,'Uti2','$2y$10$NiW3OAvIBFG3.xGVVsq0ZusFmM7AJO4B/bxfjNOyKiY9C.Uc6uR.K',2,0),(13,'Uti3','$2y$10$gJwjBO01HkF5XdKNdOHtiOWUu3zrgpLdHtseX09s2B.Ta6WEdY8Wy',3,0),(14,'Clinass','$2y$10$3UEkiJWBLXQO7WwD1og4jOswXpA81obYGh.JXLZE4bcp.bcIuXv2C',2,0),(15,'ereqrh','$2y$10$SDg.Hwwq1Su6DxF/AXnPfOdFhDDv1ziH/LGi3hL44rS/Bza9UyvNe',3,0);
+INSERT INTO `utilisateur` VALUES (1,'root','$2y$10$Sd2B1bNXYey7UjBdMg2ybuFxYh.XIM1NhYirQ.4OtwxP1GAL2aN5i',1,0),(4,'Uti1','$2y$10$FfXXyrzWoEHwoMYi3wFDq.rSu7hnjTVhUytiI/KgcwNBZdo2LDYia',2,0),(5,'Uti2','$2y$10$NiW3OAvIBFG3.xGVVsq0ZusFmM7AJO4B/bxfjNOyKiY9C.Uc6uR.K',2,0),(13,'Uti3','$2y$10$gJwjBO01HkF5XdKNdOHtiOWUu3zrgpLdHtseX09s2B.Ta6WEdY8Wy',3,0),(14,'Clinassss','$2y$10$3UEkiJWBLXQO7WwD1og4jOswXpA81obYGh.JXLZE4bcp.bcIuXv2C',2,0),(15,'ereqrh','$2y$10$SDg.Hwwq1Su6DxF/AXnPfOdFhDDv1ziH/LGi3hL44rS/Bza9UyvNe',3,0);
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -300,4 +331,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-06  1:37:43
+-- Dump completed on 2021-10-07  1:54:54
