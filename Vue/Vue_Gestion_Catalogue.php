@@ -39,11 +39,7 @@ function Vue_Affiche_Categories($listeCategorie, $utilisateur = true)
                     <li><input type='text' name='recherche' placeholder='Rechercher'> </li>
                     <li><input type='submit' name='okRechercher' value='OK'> </li>
                 </form>";
-    if ($utilisateur == false) {
-        echo "<form style='display: contents'> 
-                <li><input type='submit' name='PanierClient' value='Panier'> </li>
-                </form>";
-    }
+
     echo "
             </ul>
             </nav>";

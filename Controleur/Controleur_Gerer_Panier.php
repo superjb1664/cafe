@@ -13,7 +13,7 @@ function Controleur_Gerer_Panier()
         if (!isset($_REQUEST["validerPanier"])) {
             Vue_Structure_Entete();
             $quantiteMenu = Panier_Quantite($connexion, $_SESSION["idEntreprise"]);
-            Vue_Entreprise_Client_Menu($quantiteMenu);
+            Vue_Entreprise_Salarie_Menu($quantiteMenu);
 
 
             //Vue_Entreprise_Client_Menu();
@@ -37,7 +37,7 @@ function Controleur_Gerer_Panier()
             Facture_EnteteBrulerie($infoCommande, $infoEntreprise);
             Vue_Affiche_Panier_Client($listeArticlePanier, true);
             Facture_BasPageBrulerie($infoCommande, $infoEntreprise);
-            Commande_Valider_Caddie($connexion, $infoCommande["id"]);
+            Commande_Valider_Caddie($connexion, $infoCommande["id"], $_SESSION["idSalarie"]);
             $content = ob_get_clean();
             $html2pdf = new Html2Pdf('L', 'A4', 'fr');
             $html2pdf->pdf->SetDisplayMode('fullpage');

@@ -89,6 +89,7 @@ function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
                 echo "<td  >
                     
                         <form style='display: contents'>
+                            <input type='hidden' name='action' value='Gerer_Panier'>
                             <input type='hidden' name='idProduit' value='$produit[idProduit]'/>
                             <input type='submit' name='diminuerQTT' value ='-' style='width: auto'/>
                     
@@ -102,6 +103,7 @@ function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
             if($pdf==false) {
                 echo "<td>
                      <form style='display: contents'>
+                        <input type='hidden' name='action' value='Gerer_Panier'>
                         <input type='hidden' name='idProduit' value='$produit[idProduit]'>
                         <input type='submit' name='augmenterQTT' value ='+'  style='width: auto'>
                     </form>
@@ -153,6 +155,7 @@ function Vue_Affiche_Panier_Client ($listeProduits, $pdf=false){
             <tr>
                 <td colspan='12' style='text-align: center'>
                     <form style='display: contents'>
+                        <input type='hidden' name='action' value='Gerer_Panier'>
                         <input type='hidden' name='idProduit' value='$produit[idProduit]'>
                         <input type='submit' name='validerPanier' value ='VALIDER CETTE COMMANDE'  style='width: auto'>
                     </form>
@@ -254,6 +257,7 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
                         <td >$item[libEtat]</td>
                         <td >
                             <form style='display: contents'>
+                                <input type='hidden' name='action' value='Gerer_CommandeClient'>
                                 <input type='hidden' name='idCommande' value='$item[id]'/>
                                 <input type='submit' name='VoirDetailCommande' value='Voir'/>
                             
@@ -266,4 +270,6 @@ function Vue_Afficher_Commande_Entreprise($listeCommande)
 
 
         }
+    else
+        echo "Vous n'avez pas encore passé de commande";
 }

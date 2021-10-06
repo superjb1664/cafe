@@ -10,7 +10,7 @@ function Controleur_visiteur()
         if ($entreprise != null and $entreprise["desactiver"] == 0) {
             if (password_verify($_REQUEST["password"], $entreprise["motDePasse"])) {//le mot de passe est associable à ce Hash
                 $_SESSION["idEntreprise"] = $entreprise["idEntreprise"];
-                $_SESSION["typeConnexion"] = "entreprise";
+                $_SESSION["typeConnexionBack"] = "entreprise";
 
 
                 Controleur_Gerer_Entreprise();
@@ -28,11 +28,32 @@ function Controleur_visiteur()
             Vue_Structure_BasDePage();
         } else {
 
-            // Ce n'est pas une entreprise, on va essayer un utilisateur normal
-            $msgError = "Entreprise non trouvée";
-            Vue_Structure_Entete();
-            Vue_Connexion_Formulaire_connexion_entreprise($msgError);
-            Vue_Structure_BasDePage();
+            $salarie = Salarie_Select_byMail($connexion, $_REQUEST["compte"]);
+            // on regarde si l'entreprise existe, et si elle est activée
+            if ($salarie != null and $salarie["actif"] == 1) {
+                if (password_verify($_REQUEST["password"], $salarie["password"])) {//le mot de passe est associable à ce Hash
+                    $_SESSION["idSalarie"] = $salarie["idSalarie"];
+                    $_SESSION["idEntreprise"] = $salarie["idEntreprise"];
+                    $_SESSION["typeConnexionBack"] = "entreprise_utilisateur";
+
+
+                    Controleur_Catalogue_client();
+
+                } else {//mot de passe pas bon
+                    $msgError = "Mot de passe erroné";
+                    Vue_Structure_Entete();
+                    Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+                    Vue_Structure_BasDePage();
+                }
+            }
+            else{
+                {
+                    $msgError = "Identification invalide ou compte désactivé";
+                    Vue_Structure_Entete();
+                    Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+                    Vue_Structure_BasDePage();
+                }
+            }
         }
     }
     else

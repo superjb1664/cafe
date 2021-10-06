@@ -22,6 +22,7 @@ switch($typeConnexion)
             $action = $_REQUEST["action"];
             switch($action)
             {
+                case "Gerer_CommandeClient":
                 case "Gerer_Commande":
                     Controleur_Gerer_Commande();
                     break;
@@ -40,9 +41,11 @@ switch($typeConnexion)
 
             }
         }
-
+        echo $action;
         break;
 }
+echo "<br>".$typeConnexion;
+
 /*
 Vue_Structure_Entete();
 Vue_Connexion_Formulaire_connexion_entreprise();

@@ -3,7 +3,7 @@
 function Liste_Commande_Toute($connexionPDO)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
+    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat, denomination
     from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
@@ -11,7 +11,8 @@ function Liste_Commande_Toute($connexionPDO)
             on commande_avoir_article.idProduit = p.idProduit 
         inner join etat_commande
             on idEtatCommande = commande.etat
-       
+       inner join entreprise
+            on entreprise.idEntreprise = commande.idEntreprise
     group by commande.id, commande.dateCreation, etat_commande.libelle');
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $tableauReponse = $requetePreparee->fetchAll(PDO::FETCH_ASSOC);
@@ -47,7 +48,7 @@ function Liste_Commande_Etat($connexionPDO, $idEtatCommande)
 function Liste_Commande_Entreprise($connexionPDO, $idEntreprise)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat, denomination
+    select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat
     from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
@@ -325,15 +326,17 @@ function HistoriqueEtatCommande_Inserer($connexionPDO, $idCommande, $etat, $info
     $reponse = $requetePreparee->execute();
 }
 
-function Commande_Valider_Caddie($connexionPDO, $idCommande)
+function Commande_Valider_Caddie($connexionPDO, $idCommande, $idSalarie)
 {
     $requetePreparee = $connexionPDO->prepare(
         'UPDATE `commande`
          set etat = 2
          where `id` = :idCommande
          ');
-    HistoriqueEtatCommande_Inserer($connexionPDO,$idCommande, 2);
-    $requetePreparee->bindParam('idCommande', $idCommande);
+
+    $salarie = Salarie_Select_byId($connexionPDO, $idSalarie);
+    HistoriqueEtatCommande_Inserer($connexionPDO,$idCommande, 2, "Commande passée par $salarie[nom] $salarie[prenom]");
+    $requetePreparee->bindParam('idCommande', $idCommande );
 
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     //echo $reponse;

@@ -88,6 +88,7 @@ function Vue_Afficher_ListeDeCommandes($listeCommande)
                         <td >$item[libEtat]</td>
                         <td >
                             <form style='display: contents'>
+                                <input type='hidden' name='action' value='Gerer_CommandeClient'>
                                 <input type='hidden' name='idCommande' value='$item[id]'/>
                                 <input type='submit' name='VoirDetailCommande' value='Voir'/>
                             

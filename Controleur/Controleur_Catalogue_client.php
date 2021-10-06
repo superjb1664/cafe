@@ -5,7 +5,7 @@ function Controleur_Catalogue_client()
     $connexion = Creer_Connexion();
 
 
-    if (isset($_SESSION["idEntreprise"])) {
+    if (isset($_SESSION["idSalarie"])) {
 
         Vue_Structure_Entete();
 
@@ -16,7 +16,7 @@ function Controleur_Catalogue_client()
 
         $quantiteMenu = Panier_Quantite($connexion, $_SESSION["idEntreprise"]);
 
-        Vue_Entreprise_Client_Menu($quantiteMenu);
+        Vue_Entreprise_Salarie_Menu($quantiteMenu);
 
         //Vue_Entreprise_Client_Menu();
         $listeCategorie = Categorie_Select_Tous($connexion);

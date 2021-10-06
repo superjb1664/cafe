@@ -19,13 +19,14 @@ function Vue_Administration_Menu( )
 </nav> ";
 }
 
-function Vue_Administration_Gerer_Compte(){
+function Vue_Administration_Gerer_Compte($msg="", $action="Gerer_monCompte"){
     echo " 
     <H1>Gérer mon compte</H1>
     <table style='display: inline-block'>
         <tr>
             <td>
                 <form style='display: contents'>
+                     <input type='hidden' name='action' value='$action'>
                     <button type='submit' name='changerMDP'>Changer mot de passe </button>
                 </form>
             </td>
@@ -33,6 +34,7 @@ function Vue_Administration_Gerer_Compte(){
         <tr>
             <td>
                 <form style='display: contents'>
+                    <input type='hidden' name='action' value='$action'>
                     <button type='submit' name='SeDeconnecter'>Se déconnecter </button>
                 </form>
             </td>
@@ -40,4 +42,5 @@ function Vue_Administration_Gerer_Compte(){
     </table>
     
     ";
+    echo $msg;
 }

@@ -230,3 +230,4 @@ function Vue_Gestion_Entreprise_Formulaire($modeCreation = true, $idEntreprise =
 
 ";
 }
+
