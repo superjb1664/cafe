@@ -29,7 +29,7 @@ if (isset($_REQUEST["compte"]) and isset($_REQUEST["password"])) {//Si tous les 
 
             $link .= str_replace("connexion.php", "", $_SERVER['SCRIPT_NAME']);
             //$link .= "public/Catalogue/Cafe-Capsule.html";
-            $link .= "Catalogue_client.php";
+            $link .= "Controleur_Catalogue_client.php";
 
             header("Location: $link"); //Redirection HTTP, ordre 300, (vérifier 7.2)
             exit(); //La page s'arrête là, pour envoyer l'ordre de redirection au navigateur.

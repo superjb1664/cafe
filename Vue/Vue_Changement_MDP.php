@@ -1,8 +1,9 @@
 <?php
-    function Vue_Affiche_Formulaire_Changement_MDP(){
+    function Vue_Affiche_Formulaire_Changement_MDP($msg="", $action="Gerer_compteClient"){
         echo "
 <table style='display: inline-block'> 
     <form method='post'>
+        <input type='hidden' name='action' value='$action'>
         <h1>Changement Mot de passe</h1>
         <tr>
             <td>
@@ -35,5 +36,6 @@
             </td>
      </tr>
 </form>";
+        echo $msg;
 
     }

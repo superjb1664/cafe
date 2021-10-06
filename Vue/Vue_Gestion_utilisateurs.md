@@ -1,3 +1,0 @@
-# Principe :
-* Vue_Gestion_Utilisateur_Liste() : Affiche la liste de tous les utilisateurs enregistrés sur le site, avec un bouton Créer, Modifier, et Désactiver/activer
-* Vue_Gestion_Utilisateur_Formulaire() : gère le formulaire lorsque que l'on souhaite créer ou modifier un utilisateur (bouton réinitialiser mot de passe, mettre à jour pour la modification, et bouton Créer lorsqu'on souhaite créer)

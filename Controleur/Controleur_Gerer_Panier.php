@@ -1,14 +1,14 @@
 <?php
-    include("autoload.php");
 
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
+
+function Controleur_Gerer_Panier()
+{
     $connexion = Creer_Connexion();
 
-
-
-    if(isset($_SESSION["idEntreprise"])){
+    if (isset($_SESSION["idEntreprise"])) {
 
         if (!isset($_REQUEST["validerPanier"])) {
             Vue_Structure_Entete();
@@ -21,27 +21,22 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
             Vue_Affiche_Categories($listeCategorie, false);
         }
 
-        if(isset($_REQUEST["diminuerQTT"]))
-        {
-            Panier_DiminuerQTT_Article($connexion,$_SESSION["idEntreprise"], $_REQUEST["idProduit"]);
+        if (isset($_REQUEST["diminuerQTT"])) {
+            Panier_DiminuerQTT_Article($connexion, $_SESSION["idEntreprise"], $_REQUEST["idProduit"]);
             $listeArticlePanier = Panier_ListeArticle($connexion, $_SESSION["idEntreprise"]);
             Vue_Affiche_Panier_Client($listeArticlePanier);
-        }
-        elseif(isset($_REQUEST["augmenterQTT"]))
-        {
-            Panier_AugmenterQTT_Article($connexion,$_SESSION["idEntreprise"], $_REQUEST["idProduit"]);
+        } elseif (isset($_REQUEST["augmenterQTT"])) {
+            Panier_AugmenterQTT_Article($connexion, $_SESSION["idEntreprise"], $_REQUEST["idProduit"]);
             $listeArticlePanier = Panier_ListeArticle($connexion, $_SESSION["idEntreprise"]);
             Vue_Affiche_Panier_Client($listeArticlePanier);
-        }
-        elseif (isset($_REQUEST["validerPanier"]))
-        {
+        } elseif (isset($_REQUEST["validerPanier"])) {
             ob_start();
             $listeArticlePanier = Panier_ListeArticle($connexion, $_SESSION["idEntreprise"]);
             $infoCommande = Rechercher_Caddie_Entreprise($connexion, $_SESSION["idEntreprise"]);
             $infoEntreprise = Entreprise_Select_ParId($connexion, $_SESSION["idEntreprise"]);
-            Facture_EnteteBrulerie($infoCommande,$infoEntreprise);
+            Facture_EnteteBrulerie($infoCommande, $infoEntreprise);
             Vue_Affiche_Panier_Client($listeArticlePanier, true);
-            Facture_BasPageBrulerie($infoCommande,$infoEntreprise);
+            Facture_BasPageBrulerie($infoCommande, $infoEntreprise);
             Commande_Valider_Caddie($connexion, $infoCommande["id"]);
             $content = ob_get_clean();
             $html2pdf = new Html2Pdf('L', 'A4', 'fr');
@@ -52,19 +47,15 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
             /*$html2pdf = new Html2Pdf();
             $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
             $html2pdf->output();*/
-        }
-        else
-        {
+        } else {
             $listeArticlePanier = Panier_ListeArticle($connexion, $_SESSION["idEntreprise"]);
             Vue_Affiche_Panier_Client($listeArticlePanier);
         }
 
 
-
-    }
-    else
-    {
+    } else {
         //l'utilisateur n'est pas connecté, il n'aurait jamais du arriver ici !
         Vue_Connexion_Formulaire_connexion_administration();
     }
     Vue_Structure_BasDePage();
+}

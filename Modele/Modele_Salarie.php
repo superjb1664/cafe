@@ -18,7 +18,7 @@ function Salarie_Select_byId($connexionPDO, $idSalarie)
     $requetePreparee = $connexionPDO->prepare('
         select * 
         from `salarie`
-        where id = :idSalarie');
+        where idSalarie = :idSalarie');
     $requetePreparee->bindParam('idSalarie', $idSalarie);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
 

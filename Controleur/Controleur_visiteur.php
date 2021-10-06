@@ -11,41 +11,28 @@ function Controleur_visiteur()
             if (password_verify($_REQUEST["password"], $entreprise["motDePasse"])) {//le mot de passe est associable à ce Hash
                 $_SESSION["idEntreprise"] = $entreprise["idEntreprise"];
                 $_SESSION["typeConnexion"] = "entreprise";
-                //redirection sur la première page du catalogue
-                //Construction du lien vers lequel rediriger
-                //Dans la vraie vie, se serait plus court, mais comme je ne connais les url sur vos postes, j'ai créé un lien qui
-                //devrait marcher tout le temps (ou presque)
-                if (isset($_SERVER['HTTPS']) &&
-                    $_SERVER['HTTPS'] === 'on')
-                    $link = "https";
-                else
-                    $link = "http";
 
-                $link .= "://";
 
-                $link .= $_SERVER['HTTP_HOST'];
+                Controleur_Gerer_Entreprise();
 
-                $link .= str_replace("connexion.php", "", $_SERVER['SCRIPT_NAME']);
-                //$link .= "public/Catalogue/Cafe-Capsule.html";
-                $link .= "Catalogue_client.php";
-
-                header("Location: $link"); //Redirection HTTP, ordre 300, (vérifier 7.2)
-                exit(); //La page s'arrête là, pour envoyer l'ordre de redirection au navigateur.
             } else {//mot de passe pas bon
                 $msgError = "Mot de passe erroné";
                 Vue_Structure_Entete();
                 Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+                Vue_Structure_BasDePage();
             }
         } elseif ($entreprise != null and $entreprise["desactiver"] != 0) {
             $msgError = "Votre entreprise n'a pas l'autorisation nécessaire pour accéder au site";
             Vue_Structure_Entete();
             Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+            Vue_Structure_BasDePage();
         } else {
 
             // Ce n'est pas une entreprise, on va essayer un utilisateur normal
             $msgError = "Entreprise non trouvée";
             Vue_Structure_Entete();
             Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+            Vue_Structure_BasDePage();
         }
     }
     else
@@ -56,7 +43,8 @@ function Controleur_visiteur()
             $msgError = "";
         Vue_Structure_Entete();
         Vue_Connexion_Formulaire_connexion_entreprise($msgError);
+        Vue_Structure_BasDePage();
     }
 
-    Vue_Structure_BasDePage();
+
 }

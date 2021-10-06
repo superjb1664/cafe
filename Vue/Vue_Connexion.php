@@ -4,7 +4,7 @@
  */
 function Vue_Connexion_Formulaire_connexion_entreprise($msgErreur = "")
 {
-    echo "  <form method='post' style='    width: 50%;    display: block;    margin: auto;'>
+    echo "  <form action='index.php' method='post' style='    width: 50%;    display: block;    margin: auto;'>
                 <h1>Connexion</h1>
                 
                 <label><b>Compte</b></label>
