@@ -87,9 +87,11 @@ function Rechercher_Caddie_Entreprise($connexionPDO, $idEntreprise)
 function Rechercher_Historique_Commande($connexionPDO, $idCommande)
 {
     $requetePreparee = $connexionPDO->prepare('
-    select EC.*, HEC.*
+    select EC.*, HEC.*, utilisateur.login, salarie.nom, salarie.prenom
     from historique_etat_commande HEC
-        inner join etat_commande EC on HEC.etat = EC.idEtatCommande 
+        inner join etat_commande EC on HEC.etat = EC.idEtatCommande
+        left join salarie on HEC.idSalarie = salarie.idSalarie
+        left join utilisateur on HEC.idUtilisateur = utilisateur.idUtilisateur
     where HEC.idCommande = :idCommande
 order by HEC.dateHeure desc
     
@@ -104,7 +106,7 @@ order by HEC.dateHeure desc
     return false;
 }
 
-function Rechercher_Commande($connexionPDO, $idCommande)
+function Rechercher_Commande_ParId($connexionPDO, $idCommande)
 {
     $requetePreparee = $connexionPDO->prepare('
     select commande.*
@@ -118,7 +120,7 @@ function Rechercher_Commande($connexionPDO, $idCommande)
     /*   var_dump($idProduit, $idCommande);
        var_dump($tableauReponse);*/
     if(count($tableauReponse) >= 1)
-        return $tableauReponse;
+        return $tableauReponse[0];
     return false;
 }
 
@@ -312,33 +314,44 @@ function Panier_Quantite($connexionPDO, $idEntreprise)
     }
 }
 
-function HistoriqueEtatCommande_Inserer($connexionPDO, $idCommande, $etat, $infoComplementaire = "")
+function HistoriqueEtatCommande_Inserer($connexionPDO, $idCommande, $etat, $infoComplementaire = "", $idSalarie = -1, $idUtilisateur = -1)
 {
+    Commande_Update_Etat($connexionPDO, $idCommande, $etat);
+
     $requetePreparee = $connexionPDO->prepare(
-        'insert into `historique_etat_commande` (idCommande, etat, dateHeure, infoComplementaire)  
-        values (:idCommande, :etat, :dateHeure, :infoComplementaire) ');
+        'insert into `historique_etat_commande` (idCommande, etat, dateHeure, infoComplementaire, idSalarie, idUtilisateur)  
+        values (:idCommande, :etat, :dateHeure, :infoComplementaire, :idSalarie, :idUtilisateur) ');
     $requetePreparee->bindParam('idCommande', $idCommande);
     $date = date("Y-m-d H:i:s");
     $requetePreparee->bindParam('etat', $etat);
     $requetePreparee->bindParam('dateHeure', $date);
     $requetePreparee->bindParam('infoComplementaire', $infoComplementaire);
+    $requetePreparee->bindParam('idSalarie', $idSalarie);
+    $requetePreparee->bindParam('idUtilisateur', $idUtilisateur);
+
 
     $reponse = $requetePreparee->execute();
 }
 
-function Commande_Valider_Caddie($connexionPDO, $idCommande, $idSalarie)
+
+function Commande_Update_Etat($connexionPDO, $idCommande, $etat)
 {
     $requetePreparee = $connexionPDO->prepare(
         'UPDATE `commande`
-         set etat = 2
-         where `id` = :idCommande
+         set etat = :etat
+         where `id` = :idCommande 
          ');
-
-    $salarie = Salarie_Select_byId($connexionPDO, $idSalarie);
-    HistoriqueEtatCommande_Inserer($connexionPDO,$idCommande, 2, "Commande passée par $salarie[nom] $salarie[prenom]");
     $requetePreparee->bindParam('idCommande', $idCommande );
+    $requetePreparee->bindParam('etat', $etat );
 
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+}
+function Commande_Valider_Caddie($connexionPDO, $idCommande, $idSalarie)
+{
+  //  Commande_Update_Etat($connexionPDO, $idCommande, 2);
+    $salarie = Salarie_Select_byId($connexionPDO, $idSalarie);
+    HistoriqueEtatCommande_Inserer($connexionPDO,$idCommande, 2, "Commande passée par $salarie[nom] $salarie[prenom]",
+        $idSalarie);
     //echo $reponse;
 }
 

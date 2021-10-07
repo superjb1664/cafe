@@ -49,11 +49,11 @@ switch ($typeConnexion) {
 
                 break;
         }
-}
+}/*
 echo "<br>typeConnexion : $typeConnexion<br>";
 echo "action : $action";
 
-/*
+
 Vue_Structure_Entete();
 Vue_Connexion_Formulaire_connexion_entreprise();
 Vue_Structure_BasDePage();*/

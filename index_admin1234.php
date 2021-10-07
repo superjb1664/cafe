@@ -41,12 +41,12 @@ switch($typeConnexion)
 
             }
         }
-        echo $action;
+      //  echo $action;
         break;
 }
-echo "<br>".$typeConnexion;
+/*echo "<br>".$typeConnexion;
 
-/*
+
 Vue_Structure_Entete();
 Vue_Connexion_Formulaire_connexion_entreprise();
 Vue_Structure_BasDePage();*/
