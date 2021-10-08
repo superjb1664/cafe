@@ -43,7 +43,8 @@ function Controleur_Gerer_Panier()
             $html2pdf->pdf->SetDisplayMode('fullpage');
             $html2pdf->writeHTML($content);
             $html2pdf->output('facture.pdf');
-
+            exit();
+          //  echo $content;
             /*$html2pdf = new Html2Pdf();
             $html2pdf->writeHTML('<h1>HelloWorld</h1>This is my first test');
             $html2pdf->output();*/

@@ -93,6 +93,14 @@ function Vue_Action_Sur_Commande_Entreprise($infoCommande)
 
 }
 
+function Vue_Afficher_Button_Facture($idCommande)
+{
+    echo"<form style = 'display: contents' >
+                        <input type = 'hidden' name = 'action' value = 'Gerer_CommandeClient' >
+                        <input type = 'hidden' name = 'idCommande' value = '$idCommande' >
+                        <input type = 'submit' name = 'AfficherCommandePDF' value = 'Voir facture'  style = 'width: auto' >
+         </form >";
+}
 function Vue_Afficher_InfoCommande($infoCommande)
 {
 
@@ -282,8 +290,8 @@ function Facture_EnteteBrulerie($infoCommande, $infoentreprise)
 <tr >
 <td  style = 'text-align: left; width: 50%' > 
    <H1 > La brulerie comtoise </H1 >
-        15 grande rue < br>
-    39100 DOLE < br>
+        15 grande rue <br>
+    39100 DOLE <br>
     </td >
 <td  style = 'text-align: right; width: 50%' > $infoCommande[dateCreation]    </td >
 </tr >
@@ -294,8 +302,8 @@ function Facture_EnteteBrulerie($infoCommande, $infoentreprise)
         $infoentreprise[rueAdresse]<br >
         $infoentreprise[complementAdresse]<br >
 
-        $infoentreprise[codePostal]   $infoentreprise[ville] < br>
-  $infoentreprise[pays] < br>
+        $infoentreprise[codePostal]   $infoentreprise[ville] <br>
+  $infoentreprise[pays] <br>
   </td >
 </tr >
 </table >
@@ -314,7 +322,7 @@ function Facture_DonneRefVirementAttendu($infoCommande, $infoentreprise): string
 function Facture_BasPageBrulerie($infoCommande, $infoentreprise)
 {
     echo "
-        < H3 align = 'right' > Nous vous remercions pour votre commande .</H3 >
+        <H3 align = 'right' > Nous vous remercions pour votre commande .</H3>
     <br >
     <br >
     <h4 align = 'center' > Votre commande sera validée à la reception de votre virement dans un délai de 30 jours . 

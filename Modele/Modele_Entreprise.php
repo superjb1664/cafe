@@ -18,7 +18,8 @@ function Entreprise_Select($connexionPDO)
  */
 function Entreprise_Select_ParId($connexionPDO, $idEntreprise)
 {
-    $requetePreparee = $connexionPDO->prepare('select * from `entreprise` where idEntreprise = :paramId');
+    $requetePreparee = $connexionPDO->prepare('
+select * from `entreprise` where idEntreprise = :paramId');
     $requetePreparee->bindParam('paramId', $idEntreprise);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
     $etudiant = $requetePreparee->fetch(PDO::FETCH_ASSOC);
