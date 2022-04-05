@@ -118,3 +118,15 @@ function Salarie_Activer($connexionPDO, $idSalarie)
     $requetePreparee->bindParam('idSalarie', $idSalarie);
     $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
 }
+
+function Salarie_AccepterRGPD($connexionPDO, $idSalarie){
+    $requetePreparee = $connexionPDO->prepare('
+        update salarie
+        set bRGPD = 1,
+            dateRGPD = :dateAct
+        where idSalarie = :idSalarie');
+    $requetePreparee->bindParam('idSalarie', $idSalarie);
+    $dateAct = date("Y-m-d H:i:s");
+    $requetePreparee->bindParam('dateAct', $dateAct);
+    $reponse = $requetePreparee->execute();
+}

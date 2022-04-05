@@ -215,6 +215,16 @@ function Entreprise_Select_ParCompte($connexionPDO, $numCompte)
     $entreprise = $requetePreparee->fetch(PDO::FETCH_ASSOC);
     return $entreprise;
 }
+
+function Entreprise_Select_ParMail($connexionPDO, $mailContact)
+{
+    $requetePreparee = $connexionPDO->prepare('select * from `entreprise` where mailContact = :paramMailContact');
+    $requetePreparee->bindParam('paramMailContact', $mailContact);
+    $reponse = $requetePreparee->execute(); //$reponse boolean sur l'état de la requête
+    $entreprise = $requetePreparee->fetch(PDO::FETCH_ASSOC);
+    return $entreprise;
+}
+
 function Entreprise_Modifier_Desactivation($connexionPDO, $idEntreprise, $desactiver)
 
 {

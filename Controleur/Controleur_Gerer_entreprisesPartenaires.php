@@ -1,4 +1,5 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer; //Obligatoire pour avoir l’objet phpmailer qui marche
 
 /**
  * Ce contrôleur est dédié à la gestion des entreprises partenaires.
@@ -31,7 +32,33 @@ function Controleur_Gerer_entreprisesPartenaires()
         } elseif (isset($_REQUEST["réinitialiserMDP"])) {
             //Réinitialiser MDP sur la fiche de l'entreprise
             $entreprise = Entreprise_Select_ParId($connexion, $_REQUEST["idEntreprise"]);
-            Entreprise_Modifier_motDePasse($connexion, $_REQUEST["idEntreprise"], "secret"); //$entreprise["numCompte"]
+
+            $motDePasse = GenereMDP(10);
+            Entreprise_Modifier_motDePasse($connexion, $_REQUEST["idEntreprise"], $motDePasse); //$entreprise["numCompte"]
+
+            $mail = new PHPMailer;
+            $mail->isSMTP();
+            $mail->Host = '127.0.0.1';
+            $mail->CharSet = "UTF-8";
+            $mail->Port = 1025; //Port non crypté
+            $mail->SMTPAuth = false; //Pas d’authentification
+            $mail->SMTPAutoTLS = false; //Pas de certificat TLS
+            $mail->setFrom('contact@labruleriecomtoise.fr', 'contact');
+            $mail->addAddress($entreprise["mailContact"], $entreprise["denomination"]);
+            if ($mail->addReplyTo('test@labruleriecomtoise.fr', 'admin')) {
+                $mail->Subject = 'Objet : MDP !';
+                $mail->isHTML(false);
+                $mail->Body = "MDP $motDePasse";
+
+                if (!$mail->send()) {
+                    $msg = 'Désolé, quelque chose a mal tourné. Veuillez réessayer plus tard.';
+                } else {
+                    $msg = 'Message envoyé ! Merci de nous avoir contactés.';
+                }
+            } else {
+                $msg = 'Il doit manquer qqc !';
+            }
+        //    echo $msg;
             $listeEntreprise = Entreprise_Select($connexion);
             $Utilisateur = Utilisateur_Select_ParId($connexion, $_SESSION["idUtilisateur"]);
             Vue_Gestion_Entreprise_Liste($listeEntreprise, $Utilisateur["niveauAutorisation"]);

@@ -6,7 +6,9 @@ $paths = array(
     join(DIRECTORY_SEPARATOR, [__DIR__, 'Vue']),
     join(DIRECTORY_SEPARATOR, [__DIR__, 'Utilitaire']),
     join(DIRECTORY_SEPARATOR, [__DIR__, 'Controleur']),
-    join(DIRECTORY_SEPARATOR, [__DIR__, 'vendor'])
+    join(DIRECTORY_SEPARATOR, [__DIR__, 'vendor']),
+    join(DIRECTORY_SEPARATOR, [__DIR__, 'PHPMailer']),
+    join(DIRECTORY_SEPARATOR, [__DIR__, 'Classe']),
 );
 
 

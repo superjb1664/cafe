@@ -44,9 +44,10 @@ function Controleur_Catalogue_client()
 
             //$_SESSION["idEntreprise"]
         } else {
-            $listeProduit = Produits_Select_Libelle_Categ($connexion, "client");
-            Vue_Affiche_Produits_Clients($listeProduit);
-        }
+
+                    $listeProduit = Produits_Select_Libelle_Categ($connexion, "client");
+                    Vue_Affiche_Produits_Clients($listeProduit);
+                }
     } else {
         //l'utilisateur n'est pas connecté, il n'aurait jamais du arriver ici !
         Vue_Connexion_Formulaire_connexion_administration();
