@@ -25,7 +25,7 @@ function Liste_Commande_Etat($connexionPDO, $idEtatCommande)
 {
     $requetePreparee = $connexionPDO->prepare('
     select commande.id, commande.dateCreation, sum(commande_avoir_article.prixHT * commande_avoir_article.quantite) as prixTotalHT, sum(commande_avoir_article.prixHT * (1+commande_avoir_article.tauxTVA) * commande_avoir_article.quantite) as prixTotalTTC, sum(commande_avoir_article.quantite) as nbProduit, etat_commande.libelle as libEtat, denomination
-    from commande
+ , commande.idEntreprise   from commande
         inner join commande_avoir_article
             on commande.id = commande_avoir_article.idCommande
         inner join produit p 
